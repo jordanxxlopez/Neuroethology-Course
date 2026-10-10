@@ -1,0 +1,169 @@
+/* NEUR 411 course site. Plain, readable, WCAG 2.2 AA in light and dark modes. */
+:root {
+  --bg: #ffffff;
+  --surface: #f4f6f8;
+  --text: #1b1f24;
+  --muted: #4a5360;
+  --rule: #d5dae0;
+  --accent: #1f4e79;
+  --link: #1a4d80;
+  --link-visited: #5a3b7a;
+  --exam-bg: #e8f0f8;
+  --exam-rule: #1f4e79;
+  --muted-row: #6b7480;
+  --focus: #1f4e79;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-head: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171b;
+    --surface: #1d2127;
+    --text: #e7e9ec;
+    --muted: #b3bac4;
+    --rule: #3a414b;
+    --accent: #9cc7f0;
+    --link: #9cc7f0;
+    --link-visited: #c9b3e6;
+    --exam-bg: #1e2a38;
+    --exam-rule: #9cc7f0;
+    --muted-row: #a3abb5;
+    --focus: #9cc7f0;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+.wrap { max-width: 68rem; margin: 0 auto; padding: 0 1rem; }
+
+h1, h2, h3, h4 { font-family: var(--font-head); line-height: 1.25; color: var(--text); }
+h1 { font-size: 2.1rem; margin: 2rem 0 0.75rem; }
+h2 { font-size: 1.5rem; margin: 2.25rem 0 0.75rem; padding-top: 0.5rem; border-top: 1px solid var(--rule); }
+h3 { font-size: 1.2rem; margin: 1.5rem 0 0.5rem; }
+p, ul, ol { margin: 0 0 1rem; }
+main p, main li { max-width: 72ch; }
+li { margin-bottom: 0.35rem; }
+
+a { color: var(--link); text-decoration: underline; text-underline-offset: 0.15em; }
+a:visited { color: var(--link-visited); }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+main:focus { outline: none; }
+
+.skip-link {
+  position: absolute; left: 1rem; top: -3rem; z-index: 10;
+  background: var(--bg); color: var(--link); padding: 0.5rem 1rem; border: 2px solid var(--focus);
+}
+.skip-link:focus { top: 1rem; }
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* header and navigation */
+.site-header { background: var(--surface); border-bottom: 1px solid var(--rule); }
+.site-header > .wrap { padding-top: 1rem; padding-bottom: 0.25rem; }
+.site-title { margin: 0; font-family: var(--font-head); font-size: 1.5rem; font-weight: 700; }
+.site-title a { color: var(--text); text-decoration: none; }
+.site-title a:hover { text-decoration: underline; }
+.site-term { margin: 0.1rem 0 0.5rem; color: var(--muted); }
+.site-nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin: 0 auto; padding-bottom: 0.6rem; }
+.site-nav li { margin: 0; }
+.site-nav a { display: inline-block; padding: 0.35rem 0; color: var(--text); text-decoration: none; border-bottom: 3px solid transparent; }
+.site-nav a:hover { border-bottom-color: var(--rule); }
+.site-nav a[aria-current="page"] { border-bottom-color: var(--accent); font-weight: 600; }
+
+/* footer */
+.site-footer { margin-top: 3rem; border-top: 1px solid var(--rule); background: var(--surface); color: var(--muted); font-size: 0.95rem; }
+.site-footer .wrap { padding-top: 1rem; padding-bottom: 1.5rem; }
+.site-footer p { margin: 0.25rem 0; }
+
+/* content */
+.lede { font-size: 1.15rem; }
+.meta { color: var(--muted); font-size: 0.95rem; font-weight: normal; }
+.grid-2 { display: grid; gap: 0 2.5rem; }
+@media (min-width: 52rem) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+.link-list li { margin-bottom: 0.5rem; }
+.toc { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 0.5rem 1.25rem 0.75rem; margin: 1.5rem 0; }
+.toc h2 { border: 0; margin: 0.5rem 0; padding: 0; font-size: 1.15rem; }
+.toc ol { columns: 2 16rem; margin: 0; }
+.toc ol li { break-inside: avoid; }
+ul.inline { list-style: none; padding: 0; margin: 0.5rem 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+ul.inline li { margin: 0; }
+ul.numbers a { display: inline-block; min-width: 2.75rem; min-height: 2.75rem; line-height: 2.75rem; text-align: center; }
+
+/* tables */
+.table-wrap { overflow-x: auto; margin: 0 0 1.5rem; }
+.table-wrap:focus-visible { outline-offset: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.97rem; }
+caption { text-align: left; color: var(--muted); padding: 0 0 0.5rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--rule); }
+thead th { border-bottom: 2px solid var(--text); white-space: nowrap; }
+tbody th { font-weight: 600; }
+table.schedule { min-width: 44rem; }
+table.schedule tbody th { white-space: nowrap; }
+tr.row-exam { background: var(--exam-bg); }
+tr.row-exam th:first-child { box-shadow: inset 4px 0 0 var(--exam-rule); }
+tr.row-exam td, tr.row-exam th { font-weight: 700; }
+tr.row-noclass td, tr.row-noclass th { color: var(--muted-row); }
+tr.row-special td:nth-child(3) { font-style: normal; }
+
+/* lectures */
+.lecture-list { list-style: none; padding: 0; margin: 0; }
+.lecture { border-bottom: 1px solid var(--rule); padding: 0.75rem 0 0.5rem; margin: 0; }
+.lecture h3 { margin: 0 0 0.15rem; font-size: 1.15rem; }
+.lecture .meta { margin: 0 0 0.4rem; }
+.lnum { display: block; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin: 0 0 0.5rem; }
+.btn {
+  display: inline-block; padding: 0.45rem 0.9rem; min-height: 2.75rem; line-height: 1.8;
+  border: 2px solid var(--accent); border-radius: 4px; background: var(--accent); color: var(--bg);
+  text-decoration: none; font-weight: 600;
+}
+.btn:visited { color: var(--bg); }
+.btn:hover { text-decoration: underline; }
+.btn-secondary, .btn-secondary:visited { background: transparent; color: var(--link); }
+
+/* readings */
+.reading-group h2 .lnum { margin-bottom: 0.15rem; }
+.refs { padding-left: 1.25rem; }
+.refs li { margin-bottom: 0.75rem; }
+.refs .authors { font-weight: 600; }
+.doi { word-break: break-all; }
+
+/* home: upcoming */
+.event-list { list-style: none; padding: 0; }
+.event-list li { padding: 0.4rem 0; border-bottom: 1px solid var(--rule); margin: 0; }
+.event-list time { display: inline-block; min-width: 7rem; font-weight: 600; }
+.event-list .is-exam { font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+@media print {
+  .site-nav, .skip-link, .toc, .site-footer { display: none; }
+  a { color: inherit; }
+  .btn { border: 0; background: none; color: inherit; padding: 0; }
+  tr.row-exam { background: none; }
+}
+
+/* schedule on phones: one block per row, date and session on one line */
+@media (max-width: 40rem) {
+  table.schedule { min-width: 0; }
+  table.schedule thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  table.schedule tr { display: block; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--rule); }
+  table.schedule th, table.schedule td { display: inline; border: 0; padding: 0; }
+  table.schedule td.session::before { content: " · "; }
+  table.schedule td:nth-child(3) { display: block; margin-top: 0.2rem; }
+  table.schedule td.notes { display: block; color: var(--muted); font-size: 0.93rem; }
+  table.schedule td.notes.empty { display: none; }
+  tr.row-exam th:first-child { box-shadow: none; }
+  tr.row-exam { box-shadow: inset 4px 0 0 var(--exam-rule); padding-left: 0.9rem; }
+}

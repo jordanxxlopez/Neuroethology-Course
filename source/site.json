@@ -1,0 +1,5 @@
+{
+  "_note": "public: false adds noindex tags and a robots.txt that asks search engines not to list the site. Set to true when the course goes public.",
+  "public": false,
+  "lms": "Brightspace"
+}
