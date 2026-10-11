@@ -1,0 +1,84 @@
+{
+  "_note": "Special topics listed on the Special Topics page, grouped by theme. Titles are taken from each deck's title slide in Google Drive > Neuroethology > SPECIAL TOPICS. drive_id records which deck is the current version (the page does not link to the decks). To add a topic, add an entry; to move one onto the schedule, set \"replaces\" to the lecture number.",
+  "groups": [
+    {
+      "name": "Marine and aquatic animals",
+      "topics": [
+        {"title": "Dolphins I: anatomy/neural pathways supporting echolocation & biosonar, auditory scene analysis during prey tracking and hunting strategies", "drive_id": "1h11K5EIT01U85VAc5qvhCPuRlP09aa5G"},
+        {"title": "Dolphins II: brain organization, signature whistles, vocal learning, and individual recognition in social communication and cognition", "drive_id": "1YW3NkPag_eaXf19dUHMbmi6pmteq06QB"},
+        {"title": "Killer whales: brain organization and auditory specializations, vocal traditions, social learning, and coordination of cooperative hunting", "drive_id": "1MnPhLczPkkLe1m7_x6DT2UCdYilSkG0M"},
+        {"title": "Seahorses: brain organization, visual processing, sensorimotor control of prey capture, courtship communication, and reproductive behavior", "drive_id": "1zOiVmXC_6GSFK3K_V0fCXt3vjZwk7q3v"},
+        {"title": "Axolotl: lateral-line sensing, electroreception, and sensory processing of courtship signals", "drive_id": "1AfhqMg0BTczW4xmcWELn3aONYwuxvIHB"},
+        {"title": "Jellyfish I: neuroanatomy of Cassiopea, distributed nerve nets, rhopalia, and pacemaker control of rhythmic bell contractions", "drive_id": "14phrFr8BqZgKCRB_B_768pnMTvuZrfTh"},
+        {"title": "Jellyfish II: sleep-like states, sensory responsiveness, sleep homeostasis, and neural regulation of activity without a centralized brain", "drive_id": "1Fp6Bt1hVDDn90BOD4sBpJ9mZv6RFzea5"}
+      ]
+    },
+    {
+      "name": "Large mammals",
+      "topics": [
+        {"title": "Elephants: brain anatomy, auditory and somatosensory pathways, low-frequency hearing, seismic communication, and behavioral responses to ground-borne signals", "drive_id": "180qXozuJW85Pp8LBTUxlj0Ux6-o5-B2w"},
+        {"title": "Elephants II: Comparative Cognition, Vocal Learning, and Social Neurobiology", "drive_id": "1m9_LFH_5zEOxEzm401aoF0f31BnhyuB0"},
+        {"title": "Elephants III: elephant Neuroethics, the Neurobiology of Captivity, and Behavioral Pathology", "drive_id": "1Xdq1CHPS7tHnzMRlTiu1L-WDcLhTZ5f5"},
+        {"title": "Giraffes: brain anatomy, visual processing, sensorimotor coordination, and control of head and neck movements", "drive_id": "160fEdhFT2coUro2In8QYBcS1kdCMuBJ3"},
+        {"title": "Rhinoceroses: brain/neuro anatomy & organization, olfactory and auditory systems, territorial signaling, and social recognition", "drive_id": "11jDxVDsMF0J4pFJgDPB4QnQkHKilaCK2"},
+        {"title": "Giant pandas: brain/neuro organization & anatomy, olfactory pathways, scent communication, and reproductive behavior", "drive_id": "14j84oOAv675kkPWBxYJ9mKTbO1bFHqpW"},
+        {"title": "Pig Intelligence: Olfactory & Social Cognition", "drive_id": "19QGdVrn5CnHHfGaYUiU5KrIyVQq7yAr4"}
+      ]
+    },
+    {
+      "name": "Birds and reptiles",
+      "topics": [
+        {"title": "Flamingos: balance and postural control, sensory guidance of feeding, and social communication", "drive_id": "13z2LVX59s2al9yKgAZbJWgurHjEMJwJz"},
+        {"title": "Songbirds I: Artificial song memories, optogenetic tutoring, and neural mechanisms of vocal imitation", "drive_id": "14M47IrTWgdwPhWs6CnUC0e43RSMH87DI"},
+        {"title": "Songbirds II: Closed-loop neural interfaces, dopamine reinforcement, and adaptive control of song", "drive_id": "1D7awM3HXO4RsZJB71ksYp4EaBJUINaiK"},
+        {"title": "Turtles II: brain anatomy, sensory integration, spatial learning, and neural control of behavior", "drive_id": "1gSde8csYiNNAevmT9obOrUKfXHoVbjIB"}
+      ]
+    },
+    {
+      "name": "Social bonds, emotion and play",
+      "topics": [
+        {"title": "Prairie voles I: partner preference, social attachment, and oxytocin–dopamine interactions during pair-bond formation", "drive_id": "1lD7NYVS5aWL1PrN8bEqX16lH_5XdPGc4"},
+        {"title": "Prairie voles II: mate guarding, selective aggression, and neural mechanisms supporting the maintenance of established pair bonds", "drive_id": "1Q_I18rbNQVqghbfgeo5Pq6nyHdAJ-S1u"},
+        {"title": "Prairie voles III: partner separation, stress signaling, and behavioral and nucleus accumbens adaptations following social loss", "drive_id": "1EkZnVv03oZRq1o-39nFLwK6VfakuZuoN"},
+        {"title": "Substitute parents: decoys, robots, imprinting, surrogate caregivers, and cross-fostering across species", "drive_id": "1HF4MDlsTuNhFlydMgoytX_2YV31d4g35"},
+        {"title": "Tickling across species: play, positive affect, and laughter-like vocalizations in animals", "drive_id": "1XVWRGvV0GKNJeeal8WwHy5U7G4kOcfen"},
+        {"title": "Fear in dogs and cats: threat recognition, defensive behavior, and underlying neural circuits", "drive_id": "1cThhiHzwnASZJjxvp4SoLGvIO4Wa2BfI"},
+        {"title": "Music and sound in animals: auditory perception, rhythm processing, and behavioral responses to music", "drive_id": "1Wa4YO3TxTgjwQ1fdX50rOZSvouQNIg1q"}
+      ]
+    },
+    {
+      "name": "Brain plasticity, attention and sleep",
+      "topics": [
+        {"title": "Ferret: experimentally rewired sensory pathways, visual processing in auditory cortex, and developmental plasticity of cortical function", "drive_id": "1QKbnY_yzfFfdV_trRTi-kRbFGhxSDhWg"},
+        {"title": "Hair cell regeneration: sensory repair in fish and birds, supporting-cell plasticity, and recovery of hearing and balance", "drive_id": "161oOjDTynIO06ulXQKc9vNgaK05jF-Vd"},
+        {"title": "Attention and impulsivity across species: comparative neural mechanisms of attentional control, dopamine and norepinephrine signaling, and animal models of ADHD", "drive_id": "1h-ykWBsw4C0iqyf0rf3xSjzTEo-abXz8"},
+        {"title": "Unihemispheric Sleep in Animals: Comparative brain/neuro anatomy & organization, hemispheric specialization, predator vigilance, and the neural boundaries of consciousness", "drive_id": "1DysIvI34faVHVIH3GtbvOo6XLrRUt-9c"}
+      ]
+    },
+    {
+      "name": "Technology, virtual environments and biocomputing",
+      "topics": [
+        {"title": "Biocomputing I: Living neural networks, Yamanaka factors and cellular reprogramming, brain organoids, and biological learning — Cortical Labs, neural interfaces, and playing Pong", "drive_id": "1NdBi7nGkKncJzBnX_-mFutSiav_o5wqi"},
+        {"title": "Biocomputing II: From Pong to Doom — sensory encoding, feedback, adaptive behavior, and neuroethical questions of sentience and welfare", "drive_id": "1nHw0ocWKMoSQ1PdQsOZHUUNjCw2RrsfS"},
+        {"title": "Animals in Virtual and Interactive Environments I: Animals in virtual worlds, navigation, learning, and adaptive behavior across species", "drive_id": "1SD1-thO3SbVJFoDejlPbtjKvUN0p9Qdg"},
+        {"title": "Animals in Virtual and Interactive Environments III", "drive_id": "1vjGpxT6BMzOFob54m-jahjHLpZ1cdDQy"},
+        {"title": "Zebrafish in virtual reality: brain-wide imaging, visual feedback, and neural mechanisms of motor adaptation", "drive_id": "1V6I1Xlzj9wonQwHj0YxIwlfMDFsmDTeW"},
+        {"title": "Goldfish behind the wheel: spatial cognition, visual guidance, and transfer of navigation skills across environments", "drive_id": "1tkFmTqHrWAuiwP8zPYiopV9M-y0kgdOt"},
+        {"title": "Fish-Operated Vehicle II: Sensing, Control Mapping, and Constraints (Givon & Liu)", "drive_id": "1T8nk2lVM_w5scbgBeGNHdWjBLVEpOm8_"},
+        {"title": "Computational Methods in Animal Research I: Welfare across species, Computer vision meets animal vision, tracking, virtual prey, and Designing games for animal minds, perception, agency, motivation", "drive_id": "1D8KFG64oNCLr0ckMuyxaCK5plMyslrcT"}
+      ]
+    },
+    {
+      "name": "Captivity, welfare and managed environments",
+      "topics": [
+        {"title": "Comparative Neuroethics: The Neurobiology of Captivity, Stress, and Behavioral Pathology Across Taxa", "drive_id": "1pQSQ-y2TpgbV9mbfSWw0PuAWsatKcmR5"},
+        {"title": "Animal behavior in aquariums, zoos, and theme parks: sensory environments, learning, stress, and enrichment", "drive_id": "1VOImGn-HSoFgpzFtfTpmyfFNJz2TzsDn"},
+        {"title": "Animal Behavior in Managed Environments I: Zoos — sensory ecology, neural mechanisms of stress, social behavior, enrichment, and neuroethical considerations of captivity", "drive_id": "1doft-kKLR87a6lz79shfuOLCzudkxp4k", "field": true},
+        {"title": "Animal Behavior in Managed Environments II: Aquariums & Marine Theme Parks — underwater sensory environments, learning and reward systems, social communication, and neuroethical considerations of training and performance", "drive_id": "1YaKi9y7T7zLEuJstt3ioH7cnamSett_l", "field": true},
+        {"title": "Animal Behavior in Managed Environments III: Aquarium Sensory Worlds (visual, chemical, and mechanosensory processing, sensory adaptations, and how exhibit design shapes natural behavior)", "drive_id": "15p7_Dvq2CghvCacf5x8RvAPQZClM_KIj", "field": true},
+        {"title": "Animal Behavior in Managed Environments III: Rescue & Rehabilitation — stress, behavioral recovery, and readiness for release into the wild", "drive_id": "1oDef5L4HfHvd3aL19jyPlckqdtTEc-4k"},
+        {"title": "Animal Behavior in Managed Environments IV: Rescue, Rehabilitation & Release (neurobiology of stress and injury, behavioral recovery, human habituation, and assessment of readiness for release)", "drive_id": "1let68aSTe-q3RXjTaohUMsOBcoBMrbzi", "field": true}
+      ]
+    }
+  ]
+}

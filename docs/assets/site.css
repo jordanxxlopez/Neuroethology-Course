@@ -184,3 +184,6 @@ tr.row-special td:nth-child(3) { font-style: normal; }
 .resource-list dt { font-weight: 600; margin-top: 1.25rem; font-size: 1.05rem; }
 .resource-list dd { margin: 0.2rem 0 0; max-width: 72ch; }
 .resource-list dd.phone { color: var(--muted); }
+
+/* special topics */
+.topic-list li { margin-bottom: 0.5rem; }

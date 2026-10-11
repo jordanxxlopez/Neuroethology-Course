@@ -292,6 +292,7 @@ NAV = [
     ("labs.html", "Labs"),
     ("project.html", "Lecture Project"),
     ("field-experience.html", "Field Experience"),
+    ("special-topics.html", "Special Topics"),
     ("resources.html", "Resources"),
 ]
 RESOURCE_TABS = [
@@ -404,6 +405,7 @@ def build_home(sections, cal, lectures, settings):
 <li><a href="labs.html">Labs</a>: lab schedule, report due dates, computational assignments and the reflection essay.</li>
 <li><a href="project.html">Lecture project</a>: the simulation or APA paper options and milestones.</li>
 <li><a href="field-experience.html">Field experience</a>: the required Fall Recess trip, October 8 to 11.</li>
+<li><a href="special-topics.html">Special topics</a>: additional lecture topics you can request to replace a scheduled lecture.</li>
 <li><a href="resources.html">Resources</a>: software, library and study help, and USC policies and support services.</li>
 <li><a href="syllabus.html">Syllabus</a>: grading, exams, policies; also as a <a href="files/NEUR411_Syllabus_Fall2026.pdf">PDF</a> or <a href="files/NEUR411_Syllabus_Fall2026.docx">Word document</a>.</li>
 </ul>
@@ -652,6 +654,50 @@ def build_field(sections, cal, settings):
                 "The required Fall Recess field experience for NEUR 411.")
 
 
+def build_special(settings):
+    data = json.loads((SRC / "special_topics.json").read_text())
+    total = sum(len(g["topics"]) for g in data["groups"])
+    groups = []
+    for g in data["groups"]:
+        items = []
+        for t in g["topics"]:
+            note = ' <span class="meta">(also a Fall Recess field experience topic)</span>' if t.get("field") else ""
+            items.append(f"<li>{esc(t['title'])}{note}</li>")
+        groups.append(f'<h3 id="{slug(g["name"])}">{esc(g["name"])} <span class="meta">({len(g["topics"])})</span></h3>'
+                      f'<ul class="topic-list">{"".join(items)}</ul>')
+    jump = "".join(f'<li><a href="#{slug(g["name"])}">{esc(g["name"])}</a></li>' for g in data["groups"])
+    body = f"""
+<h1>Special topics</h1>
+<p class="lede">Beyond the 40 scheduled lectures, the course has a library of special-topic lectures on other
+animals and questions. They can replace a scheduled lecture during the semester, and every one of them is
+a reference for your lecture project and for going further.</p>
+
+<section aria-labelledby="requesting">
+<h2 id="requesting">Requesting a special topic</h2>
+<ul>
+<li>Throughout the semester, you may request that a special topic replace a scheduled lecture. A request can
+swap a lecture for the same subject in another animal (for example, a lecture on electroreception could be
+replaced with a special topic on electroreception and lateral-line sensing in the axolotl), or for any topic
+on the list below.</li>
+<li>Special topics are not guaranteed. I decide whether a lecture is replaced, and usually only one to five
+lectures in a semester are replaced with special topics.</li>
+<li>To make a request, e-mail <a href="mailto:jlopez11@usc.edu">jlopez11@usc.edu</a> with the subject line
+“NEUR 411: Special topic request”. Name the topic you want, the scheduled lecture it would replace, and why.</li>
+<li>Any replacement is announced in class and posted on the <a href="schedule.html">course calendar</a>
+before the lecture.</li>
+</ul>
+</section>
+
+<section aria-labelledby="topics">
+<h2 id="topics">Topics you can choose from <span class="meta">({total} topics)</span></h2>
+<nav class="toc" aria-label="Special topic groups"><ul class="inline">{jump}</ul></nav>
+{''.join(groups)}
+</section>
+"""
+    return page("special-topics.html", "Special Topics", body, settings,
+                "Special-topic lectures students can request to replace a scheduled NEUR 411 lecture.")
+
+
 def resource_tabs(current):
     items = []
     for href, label in RESOURCE_TABS:
@@ -752,6 +798,7 @@ def main():
         "labs.html": build_labs(sections, settings),
         "project.html": build_project(sections, settings),
         "field-experience.html": build_field(sections, cal, settings),
+        "special-topics.html": build_special(settings),
         "resources.html": build_resources(sections, settings),
         "resources-university.html": build_university(settings),
         "accessibility.html": build_accessibility(settings),
