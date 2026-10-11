@@ -46,7 +46,7 @@ Repository **Settings → Pages → Build and deployment → Deploy from a branc
 
 ## Accessibility
 
-Semantic HTML with landmarks, a skip link and one `h1` per page; WCAG 2.2 AA contrast in light and dark
-modes; visible focus and underlined links; captioned tables with header cells; a stacked calendar layout on
+Semantic HTML with landmarks, a skip link and one `h1` per page; WCAG 2.2 AA contrast, always on a white background (dark mode is ignored)
+visible focus and underlined links; captioned tables with header cells; a stacked calendar layout on
 phones; no reliance on color alone (exam rows are labeled “Exam”); works without JavaScript (the only script
 fills the home page's “Coming up” list). Every page passes axe-core's WCAG 2.2 AA and best-practice rules.

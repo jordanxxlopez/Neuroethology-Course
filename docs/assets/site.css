@@ -1,4 +1,4 @@
-/* NEUR 411 course site. Plain, readable, WCAG 2.2 AA in light and dark modes. */
+/* NEUR 411 course site. Plain, readable, WCAG 2.2 AA. Always light: ignores the device dark-mode setting. */
 :root {
   --bg: #ffffff;
   --surface: #f4f6f8;
@@ -14,23 +14,7 @@
   --focus: #1f4e79;
   --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-head: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
-  color-scheme: light dark;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #14171b;
-    --surface: #1d2127;
-    --text: #e7e9ec;
-    --muted: #b3bac4;
-    --rule: #3a414b;
-    --accent: #9cc7f0;
-    --link: #9cc7f0;
-    --link-visited: #c9b3e6;
-    --exam-bg: #1e2a38;
-    --exam-rule: #9cc7f0;
-    --muted-row: #a3abb5;
-    --focus: #9cc7f0;
-  }
+  color-scheme: light only;
 }
 
 *, *::before, *::after { box-sizing: border-box; }

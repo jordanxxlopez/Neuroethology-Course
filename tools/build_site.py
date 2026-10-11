@@ -314,6 +314,7 @@ def page(filename, title, body, settings, description="", section=None):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
 {robots}<title>{full_title}</title>
 <meta name="description" content="{esc(description or 'Course website for NEUR 411 Neuroethology, Fall 2026.')}">
 <link rel="stylesheet" href="assets/site.css">
@@ -739,11 +740,11 @@ def build_accessibility(settings):
     body = f"""
 <h1>Accessibility</h1>
 <p class="lede">This site is built to be usable with a keyboard, a screen reader, browser zoom and high-contrast
-or dark display settings.</p>
+display settings.</p>
 <h2>How the site is built</h2>
 <ul>
 <li>Every page has the same navigation, a skip link to the main content and a logical heading structure.</li>
-<li>Text and links meet WCAG 2.2 AA contrast in both light and dark modes; links are underlined, and the keyboard focus is always visible.</li>
+<li>Text and links meet WCAG 2.2 AA contrast; the site always uses a white background, whatever the device's dark-mode setting; links are underlined, and the keyboard focus is always visible.</li>
 <li>Tables have captions and header cells. Wide tables scroll inside their own region on small screens.</li>
 <li>Pages work without JavaScript. The only script on the site lists upcoming dates on the home page.</li>
 <li>The syllabus is available as an HTML page, a PDF and a Word document.</li>
