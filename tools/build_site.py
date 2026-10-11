@@ -511,8 +511,7 @@ def deck_links(entry, n):
             return '<span class="meta">Slides will be posted here.</span>'
         fid = entry["drive_id"]
         return (f'<a class="btn" href="https://drive.google.com/file/d/{fid}/view">View slides{hidden}</a> '
-                f'<a class="btn btn-secondary" href="https://drive.google.com/uc?export=download&amp;id={fid}">'
-                f'Download PowerPoint{hidden}</a> <span class="meta">.pptx, {fmt_size(entry["size"])}</span>')
+                f'<span class="meta">PowerPoint, {fmt_size(entry["size"])}</span>')
     href = f"files/lectures/{local}"
     return (f'<a class="btn" href="{esc(href)}" download>Download slides{hidden}</a> '
             f'<span class="meta">PowerPoint, {fmt_size(path.stat().st_size)}</span>')
@@ -556,10 +555,10 @@ def build_lectures(cal, lectures, readings, settings):
 </section>""")
     body = f"""
 <h1>Lecture slides</h1>
-<p class="lede">Slides for every lecture. <strong>View slides</strong> opens a deck in your browser;
-<strong>Download PowerPoint</strong> saves the file, with speaker notes, to your computer.</p>
-<p>The slides are stored in Google Drive. If Drive asks you to sign in, use your USC account
-(your @usc.edu email). Downloaded files open in PowerPoint, Keynote, Google Slides or LibreOffice Impress. Lecture slides are the
+<p class="lede">Slides for every lecture. <strong>View slides</strong> opens the deck in Google Drive.
+To save a copy, use the download button (the downward arrow) at the top of the Drive viewer.</p>
+<p>If Drive asks you to sign in, use your USC account (your @usc.edu email). Downloaded files include the
+speaker notes and open in PowerPoint, Keynote, Google Slides or LibreOffice Impress. Lecture slides are the
 primary source of instruction, and exams are based on lecture content, including material presented in
 class that is not on the slides. Updated versions of each deck will replace these as they are posted.</p>
 <nav class="toc" aria-label="Lecture groups"><ul class="inline">
@@ -750,8 +749,8 @@ or dark display settings.</p>
 <li>The syllabus is available as an HTML page, a PDF and a Word document.</li>
 </ul>
 <h2>Lecture slides</h2>
-<p>Slides open in Google Drive's viewer, which works with screen readers and zoom, and can be downloaded as
-PowerPoint files that include the speaker notes. Figures in the slides come from published research articles;
+<p>Slides open in Google Drive's viewer, which works with screen readers and zoom; the viewer's download
+button saves the PowerPoint file, including the speaker notes. Figures in the slides come from published research articles;
 each carries its source and citation.</p>
 <h2>Requesting another format or reporting a problem</h2>
 <p>If any material is hard to use, e-mail <a href="mailto:jlopez11@usc.edu">jlopez11@usc.edu</a> with the page
