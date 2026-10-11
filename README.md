@@ -8,7 +8,7 @@ The site is generated from two sources, so the website never drifts from the syl
 | File | What it controls |
 |---|---|
 | `source/JL_NEUR411.docx` | The syllabus. Every policy, the course calendar, lab schedule and readings list on the site are read from it. |
-| `source/lectures.json` | One entry per lecture deck: its Google Drive file ID, file name and size. |
+| `source/lectures.json` | One entry per lecture deck: which file is the current version, and its copy on the site. |
 | `source/site.json` | `public` (search-engine visibility) and the name of the grading platform. |
 
 The built site is in `docs/` (plain HTML and one stylesheet, no framework).
@@ -22,12 +22,13 @@ python3 tools/build_site.py
 
 - **Syllabus changed:** replace `source/JL_NEUR411.docx` (keep the file name) and rebuild. The PDF and Word
   downloads are refreshed automatically when LibreOffice (`soffice`) is installed.
-- **New version of a lecture deck** (e.g. the scaffolded version): upload it to Drive, then put its file ID
-  (the long string in the Drive link `drive.google.com/file/d/<ID>/view`), file name and size in bytes into
-  that lecture's entry in `source/lectures.json`, and rebuild. To keep the same link, use Drive's
-  *Manage versions → Upload new version* on the existing file instead; then nothing here changes.
-- **Host a deck on the site itself instead of Drive:** copy it to `docs/files/lectures/` and add
-  `"local": "<file name>"` to its entry. (GitHub rejects single files over 100 MB.)
+- **Lecture slides** link to the decks in Google Drive (*NEUROETHOLGY-UPDATED LECTURES*, shared with USC as
+  Viewer), with View and Download buttons. To post a new version (e.g. the scaffolded deck), use Drive's
+  *Manage versions → Upload new version* on the existing file so the link stays the same; or put the new
+  file's Drive ID, name and size in `source/lectures.json` and rebuild.
+  Optional: `python3 tools/add_decks.py <zip or folder>` hosts decks on the site itself instead of Drive.
+- **Class and university resources** are edited in `source/class_resources.html` and
+  `source/university_resources.html`.
 
 ## Publish (GitHub Pages)
 
@@ -36,15 +37,11 @@ Repository **Settings → Pages → Build and deployment → Deploy from a branc
 
 ## Keeping it private for now
 
-- The lecture links point to the files in Google Drive, so **Drive sharing is what controls access to the
-  slides**. Share the *NEUROETHOLGY-UPDATED LECTURES* folder (or the individual files) with
-  **“USC — anyone in this group with the link” as Viewer**, so only signed-in USC accounts can open them.
-  Students do not see the folder itself, only the file linked for each lecture.
-- `source/site.json` has `"public": false`, which adds `noindex` tags and a `robots.txt` asking search
-  engines not to list the site. Set it to `true` when the course goes public.
-- GitHub Pages sites are reachable by anyone who has the URL, even from a private repository (private-repo
-  Pages needs a paid GitHub plan; access-controlled Pages needs GitHub Enterprise Cloud). The pages
-  themselves hold only syllabus information.
+- Leave GitHub Pages **off** until the course goes live. To look at the site, download the repository
+  (Code → Download ZIP) and open `docs/index.html`.
+- Going live: Settings → Pages → Deploy from a branch → this branch, `/docs`. Search engines are asked not to
+  list the site while `"public": false` in `source/site.json`.
+- The slides stay behind USC sign-in through the Drive folder's sharing setting.
 - Before going public, check reuse rights for the published figures and videos in the decks.
 
 ## Accessibility

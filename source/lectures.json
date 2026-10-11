@@ -1,46 +1,246 @@
 {
-  "_note": "One entry per lecture deck from Google Drive > Neuroethology > NEUROETHOLGY-UPDATED LECTURES. To swap in a new version (e.g. the scaffolded deck), replace drive_id/file/size. To host a file on the site itself instead of Drive, put it in docs/files/lectures/ and set \"local\" to its file name.",
+  "_note": "One entry per lecture deck in Google Drive > Neuroethology > NEUROETHOLGY-UPDATED LECTURES (shared with USC as Viewer). To post a new version, put its Drive file ID, file name and size here. To host a deck on the site instead, run tools/add_decks.py.",
   "drive_folder": "https://drive.google.com/drive/folders/12pnmcbFU2VGIITO3Un6yyx-tw8rfZx65",
   "lectures": [
-    {"n": 1,  "drive_id": "1UTwMQXVLHZL0OJvGRKSVsqYmBheqsQ5L", "file": "Neuroethology_Lecture1_FA2026_V2.pptx",  "size": 11210622},
-    {"n": 2,  "drive_id": "1DTJkSnE0hzUGW6TsCN6WGicoZOZPEnpo", "file": "Neuroethology_Lecture2_FA2026_V2.pptx",  "size": 12354536},
-    {"n": 3,  "drive_id": "1CWeTVnX-ilHaQCknlJHlgZh6QAYRT35o", "file": "Neuroethology_Lecture3_FA2026_V2.pptx",  "size": 7409441},
-    {"n": 4,  "drive_id": "1H2xnoWnieCAETOy9j1OzFSaqjKGLB2IX", "file": "Neuroethology_Lecture4_FA2026_V2.pptx",  "size": 4786536},
-    {"n": 5,  "drive_id": "1m5MIdhV0mYngXBhCujnOD3SDGSk8MXm3", "file": "Neuroethology_Lecture5_FA2026_V2.pptx",  "size": 18571712},
-    {"n": 6,  "drive_id": "1nbSlD4YSQal1YqbF0GragenfkTIzQwGR", "file": "Neuroethology_Lecture6_FA2026_V2.pptx",  "size": 10658313},
-    {"n": 7,  "drive_id": "1cwVQvPKdpP-dYyq4x928pmw3FlML6zV2", "file": "Neuroethology_Lecture7_FA2026_V2.pptx",  "size": 8171783},
-    {"n": 8,  "drive_id": "1gR_SLV-SwPoECTlXqyNwI37RQ68-h-Gv", "file": "Neuroethology_Lecture8_FA2026_V3.pptx",  "size": 13847118},
-    {"n": 9,  "drive_id": "13tP96zrBVhYubATgoPQZeFx6qvc9N3FI", "file": "Neuroethology_Lecture9_FA2026_V2.pptx",  "size": 20189934},
-    {"n": 10, "drive_id": "1BmfcGgtI6MBf00c8bjHcM4yX90f5x22o", "file": "Neuroethology_Lecture10_FA2026_V2.pptx", "size": 7483334},
-    {"n": 11, "drive_id": "1lxCccyPrOX78wR1kqjyo1sxrfKLuLY_s", "file": "Neuroethology_Lecture11_FA2026_V2.pptx", "size": 23669278},
-    {"n": 12, "drive_id": "14cu0vldWGAgFzcsL-CxatvhoaTo0BYCb", "file": "Neuroethology_Lecture12_FA2026_V3.pptx", "size": 14286673},
-    {"n": 13, "drive_id": "1c9QtxPcWHJAKYOAG50OU13KlArGaH1Qa", "file": "Neuroethology_Lecture13_FA2026_V2.pptx", "size": 16308830},
-    {"n": 14, "drive_id": "1Klw4OZ8KogQQVUmJ8iSrZmlZ7VaD31VK", "file": "Neuroethology_Lecture14_FA2026_V2.pptx", "size": 13238613},
-    {"n": 15, "drive_id": "16eneIoAshr3KVyPpiWa7pFK86APUg4Qs", "file": "Neuroethology_Lecture15_FA2026_NEW.pptx", "size": 11033352},
-    {"n": 16, "drive_id": "1YrqhyM4ZRb5RnG7mijYLNgbY5kjC44Pz", "file": "Neuroethology_Lecture16_FA2026_NEW.pptx", "size": 6362937},
-    {"n": 17, "drive_id": "1EXrk4mEtxdX5_WNyP1h2O2x51Tm2-eXx", "file": "Neuroethology_Lecture17_FA2026_NEW.pptx", "size": 6320657},
-    {"n": 18, "drive_id": "1YDTOJqY5Ky1uUAqlFDwJ5es_8pJzg9gd", "file": "Neuroethology_Lecture18_FA2026.pptx",     "size": 8115471},
-    {"n": 19, "drive_id": "1mk5mDO5_xVgls1_95e35_SlMFRvpsFLK", "file": "Neuroethology_Lecture19_FA2026.pptx",     "size": 17705540},
-    {"n": 20, "drive_id": "101Ek97SXNyrmCXIRIJJu-3p_NL2vmrGb", "file": "Neuroethology_Lecture20_FA2026.pptx",     "size": 18634592},
-    {"n": 21, "drive_id": "1S9jaTWcqes3Tqcpddz8X8rVHIlNFOxU0", "file": "Neuroethology_Lecture21_FA2026.pptx",     "size": 6823647},
-    {"n": 22, "drive_id": "10Y2xDYnq3zIIHoVO8ZJjzwMRrxkH7cME", "file": "Neuroethology_Lecture22_FA2026.pptx",     "size": 14484446},
-    {"n": 23, "drive_id": "12PdU7wUSXau7oZdV2PxQP8N-Qa_kP5XC", "file": "Neuroethology_Lecture23_FA2026.pptx",     "size": 22824088},
-    {"n": 24, "drive_id": "1mbuekljdqEIFM2jYdVLSoWDJybFwTInD", "file": "Neuroethology_Lecture24_FA2026.pptx",     "size": 20945151},
-    {"n": 25, "drive_id": "1sHQIMb_6R9WuSoePUGhr35wR3RKBgMRx", "file": "Neuroethology_Lecture25_FA2026.pptx",     "size": 26056666},
-    {"n": 26, "drive_id": "1k5UNqn2fksvOJiX298n1KU4CuRJ8MLql", "file": "Neuroethology_Lecture26_FA2026.pptx",     "size": 39473987},
-    {"n": 27, "drive_id": "1bMeDS68kbrBHlzVdr5lM-X76aP1iM82B", "file": "Neuroethology_Lecture27_FA2026.pptx",     "size": 12281108},
-    {"n": 28, "drive_id": "1Hs-6ZBeHpjuxorlTmhWeGClvxqCF5JJe", "file": "Neuroethology_Lecture28_FA2026.pptx",     "size": 6211443},
-    {"n": 29, "drive_id": "1--rAkJODSOEuULXunj0gDXG0pRDkSiQM", "file": "Neuroethology_Lecture29_FA2026.pptx",     "size": 26769217},
-    {"n": 30, "drive_id": "1yuUBzieLsKWOEqKiKPZPHf2ofS6bGkti", "file": "Neuroethology_Lecture30_FA2026.pptx",     "size": 14204205},
-    {"n": 31, "drive_id": "18asbPKQFgPMOY8aYfLSfbt1u12cFYRK0", "file": "Neuroethology_Lecture31_FA2026.pptx",     "size": 29251873},
-    {"n": 32, "drive_id": "1xVlBmXJpbgYDkhSWLwpuMjVaOtnr3wRS", "file": "Neuroethology_Lecture32_FA2026.pptx",     "size": 17547717},
-    {"n": 33, "drive_id": "1jq9EEMAYFerbz9CG6k9CuRxec-5cac0h", "file": "Neuroethology_Lecture33_FA2026.pptx",     "size": 3462759},
-    {"n": 34, "drive_id": "1Fd13_T3nNFvmx7AL3Gi5GV9sLoMrTuFR", "file": "Neuroethology_Lecture34_FA2026.pptx",     "size": 11912967},
-    {"n": 35, "drive_id": "1dFtZh7DkeMC3a2Q0qgVl5lrcoF4iO30p", "file": "Neuroethology_Lecture35_FA2026.pptx",     "size": 21833275},
-    {"n": 36, "drive_id": "1rdyb8xpAld1Ll_J3wQ9VNPrWoKKf7Acl", "file": "Neuroethology_Lecture36_FA2026.pptx",     "size": 10515600},
-    {"n": 37, "drive_id": "1mmgAOr35NRw_JIHG43A3ldQSQu82SHAi", "file": "Neuroethology_Lecture37_FA2026.pptx",     "size": 11901493},
-    {"n": 38, "drive_id": "1TQHgCXq4QGs5WERAJO-HeqMwqm3wYxOp", "file": "Neuroethology_Lecture38_FA2026.pptx",     "size": 9064533},
-    {"n": 39, "drive_id": "1EdVDh4ecCKewV7e13h481ehDVVf9xM9y", "file": "Neuroethology_Lecture39_FA2026.pptx",     "size": 7610099},
-    {"n": 40, "drive_id": "1Qh4UGgl7We43vH7GS-HRuklQpleTatyT", "file": "Neuroethology_Lecture40_FA2026_V2.pptx", "size": 25841017}
+    {
+      "n": 1,
+      "drive_id": "1UTwMQXVLHZL0OJvGRKSVsqYmBheqsQ5L",
+      "file": "Neuroethology_Lecture1_FA2026_V2.pptx",
+      "size": 11210622
+    },
+    {
+      "n": 2,
+      "drive_id": "1DTJkSnE0hzUGW6TsCN6WGicoZOZPEnpo",
+      "file": "Neuroethology_Lecture2_FA2026_V2.pptx",
+      "size": 12354536
+    },
+    {
+      "n": 3,
+      "drive_id": "1CWeTVnX-ilHaQCknlJHlgZh6QAYRT35o",
+      "file": "Neuroethology_Lecture3_FA2026_V2.pptx",
+      "size": 7409441
+    },
+    {
+      "n": 4,
+      "drive_id": "1H2xnoWnieCAETOy9j1OzFSaqjKGLB2IX",
+      "file": "Neuroethology_Lecture4_FA2026_V2.pptx",
+      "size": 4786536
+    },
+    {
+      "n": 5,
+      "drive_id": "1m5MIdhV0mYngXBhCujnOD3SDGSk8MXm3",
+      "file": "Neuroethology_Lecture5_FA2026_V2.pptx",
+      "size": 18571712
+    },
+    {
+      "n": 6,
+      "drive_id": "1nbSlD4YSQal1YqbF0GragenfkTIzQwGR",
+      "file": "Neuroethology_Lecture6_FA2026_V2.pptx",
+      "size": 10658313
+    },
+    {
+      "n": 7,
+      "drive_id": "1cwVQvPKdpP-dYyq4x928pmw3FlML6zV2",
+      "file": "Neuroethology_Lecture7_FA2026_V2.pptx",
+      "size": 8171783
+    },
+    {
+      "n": 8,
+      "drive_id": "1gR_SLV-SwPoECTlXqyNwI37RQ68-h-Gv",
+      "file": "Neuroethology_Lecture8_FA2026_V3.pptx",
+      "size": 13847118
+    },
+    {
+      "n": 9,
+      "drive_id": "13tP96zrBVhYubATgoPQZeFx6qvc9N3FI",
+      "file": "Neuroethology_Lecture9_FA2026_V2.pptx",
+      "size": 20189934
+    },
+    {
+      "n": 10,
+      "drive_id": "1BmfcGgtI6MBf00c8bjHcM4yX90f5x22o",
+      "file": "Neuroethology_Lecture10_FA2026_V2.pptx",
+      "size": 7483334
+    },
+    {
+      "n": 11,
+      "drive_id": "1lxCccyPrOX78wR1kqjyo1sxrfKLuLY_s",
+      "file": "Neuroethology_Lecture11_FA2026_V2.pptx",
+      "size": 23669278
+    },
+    {
+      "n": 12,
+      "drive_id": "14cu0vldWGAgFzcsL-CxatvhoaTo0BYCb",
+      "file": "Neuroethology_Lecture12_FA2026_V3.pptx",
+      "size": 14286673
+    },
+    {
+      "n": 13,
+      "drive_id": "1c9QtxPcWHJAKYOAG50OU13KlArGaH1Qa",
+      "file": "Neuroethology_Lecture13_FA2026_V2.pptx",
+      "size": 16308830
+    },
+    {
+      "n": 14,
+      "drive_id": "1Klw4OZ8KogQQVUmJ8iSrZmlZ7VaD31VK",
+      "file": "Neuroethology_Lecture14_FA2026_V2.pptx",
+      "size": 13238613
+    },
+    {
+      "n": 15,
+      "drive_id": "16eneIoAshr3KVyPpiWa7pFK86APUg4Qs",
+      "file": "Neuroethology_Lecture15_FA2026_NEW.pptx",
+      "size": 11033352
+    },
+    {
+      "n": 16,
+      "drive_id": "1YrqhyM4ZRb5RnG7mijYLNgbY5kjC44Pz",
+      "file": "Neuroethology_Lecture16_FA2026_NEW.pptx",
+      "size": 6362937
+    },
+    {
+      "n": 17,
+      "drive_id": "1EXrk4mEtxdX5_WNyP1h2O2x51Tm2-eXx",
+      "file": "Neuroethology_Lecture17_FA2026_NEW.pptx",
+      "size": 6320657
+    },
+    {
+      "n": 18,
+      "drive_id": "1YDTOJqY5Ky1uUAqlFDwJ5es_8pJzg9gd",
+      "file": "Neuroethology_Lecture18_FA2026.pptx",
+      "size": 8115471
+    },
+    {
+      "n": 19,
+      "drive_id": "1mk5mDO5_xVgls1_95e35_SlMFRvpsFLK",
+      "file": "Neuroethology_Lecture19_FA2026.pptx",
+      "size": 17705540
+    },
+    {
+      "n": 20,
+      "drive_id": "101Ek97SXNyrmCXIRIJJu-3p_NL2vmrGb",
+      "file": "Neuroethology_Lecture20_FA2026.pptx",
+      "size": 18634592
+    },
+    {
+      "n": 21,
+      "drive_id": "1S9jaTWcqes3Tqcpddz8X8rVHIlNFOxU0",
+      "file": "Neuroethology_Lecture21_FA2026.pptx",
+      "size": 6823647
+    },
+    {
+      "n": 22,
+      "drive_id": "10Y2xDYnq3zIIHoVO8ZJjzwMRrxkH7cME",
+      "file": "Neuroethology_Lecture22_FA2026.pptx",
+      "size": 14484446
+    },
+    {
+      "n": 23,
+      "drive_id": "12PdU7wUSXau7oZdV2PxQP8N-Qa_kP5XC",
+      "file": "Neuroethology_Lecture23_FA2026.pptx",
+      "size": 22824088
+    },
+    {
+      "n": 24,
+      "drive_id": "1mbuekljdqEIFM2jYdVLSoWDJybFwTInD",
+      "file": "Neuroethology_Lecture24_FA2026.pptx",
+      "size": 20945151
+    },
+    {
+      "n": 25,
+      "drive_id": "1sHQIMb_6R9WuSoePUGhr35wR3RKBgMRx",
+      "file": "Neuroethology_Lecture25_FA2026.pptx",
+      "size": 26056666
+    },
+    {
+      "n": 26,
+      "drive_id": "1k5UNqn2fksvOJiX298n1KU4CuRJ8MLql",
+      "file": "Neuroethology_Lecture26_FA2026.pptx",
+      "size": 39473987
+    },
+    {
+      "n": 27,
+      "drive_id": "1bMeDS68kbrBHlzVdr5lM-X76aP1iM82B",
+      "file": "Neuroethology_Lecture27_FA2026.pptx",
+      "size": 12281108
+    },
+    {
+      "n": 28,
+      "drive_id": "1Hs-6ZBeHpjuxorlTmhWeGClvxqCF5JJe",
+      "file": "Neuroethology_Lecture28_FA2026.pptx",
+      "size": 6211443
+    },
+    {
+      "n": 29,
+      "drive_id": "1--rAkJODSOEuULXunj0gDXG0pRDkSiQM",
+      "file": "Neuroethology_Lecture29_FA2026.pptx",
+      "size": 26769217
+    },
+    {
+      "n": 30,
+      "drive_id": "1yuUBzieLsKWOEqKiKPZPHf2ofS6bGkti",
+      "file": "Neuroethology_Lecture30_FA2026.pptx",
+      "size": 14204205
+    },
+    {
+      "n": 31,
+      "drive_id": "18asbPKQFgPMOY8aYfLSfbt1u12cFYRK0",
+      "file": "Neuroethology_Lecture31_FA2026.pptx",
+      "size": 29251873
+    },
+    {
+      "n": 32,
+      "drive_id": "1xVlBmXJpbgYDkhSWLwpuMjVaOtnr3wRS",
+      "file": "Neuroethology_Lecture32_FA2026.pptx",
+      "size": 17547717
+    },
+    {
+      "n": 33,
+      "drive_id": "1jq9EEMAYFerbz9CG6k9CuRxec-5cac0h",
+      "file": "Neuroethology_Lecture33_FA2026.pptx",
+      "size": 3462759
+    },
+    {
+      "n": 34,
+      "drive_id": "1Fd13_T3nNFvmx7AL3Gi5GV9sLoMrTuFR",
+      "file": "Neuroethology_Lecture34_FA2026.pptx",
+      "size": 11912967
+    },
+    {
+      "n": 35,
+      "drive_id": "1dFtZh7DkeMC3a2Q0qgVl5lrcoF4iO30p",
+      "file": "Neuroethology_Lecture35_FA2026.pptx",
+      "size": 21833275
+    },
+    {
+      "n": 36,
+      "drive_id": "1rdyb8xpAld1Ll_J3wQ9VNPrWoKKf7Acl",
+      "file": "Neuroethology_Lecture36_FA2026.pptx",
+      "size": 10515600
+    },
+    {
+      "n": 37,
+      "drive_id": "1mmgAOr35NRw_JIHG43A3ldQSQu82SHAi",
+      "file": "Neuroethology_Lecture37_FA2026.pptx",
+      "size": 11901493
+    },
+    {
+      "n": 38,
+      "drive_id": "1TQHgCXq4QGs5WERAJO-HeqMwqm3wYxOp",
+      "file": "Neuroethology_Lecture38_FA2026.pptx",
+      "size": 9064533
+    },
+    {
+      "n": 39,
+      "drive_id": "1EdVDh4ecCKewV7e13h481ehDVVf9xM9y",
+      "file": "Neuroethology_Lecture39_FA2026.pptx",
+      "size": 7610099
+    },
+    {
+      "n": 40,
+      "drive_id": "1Qh4UGgl7We43vH7GS-HRuklQpleTatyT",
+      "file": "Neuroethology_Lecture40_FA2026_V2.pptx",
+      "size": 25841017
+    }
   ]
 }

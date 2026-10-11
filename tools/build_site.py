@@ -31,8 +31,10 @@ YEAR = 2026
 
 # Syllabus sections that get their own page instead of appearing on the syllabus page.
 OWN_PAGE = {"Course Calendar", "Readings Calendar"}
-# Syllabus sections shown on the Labs & Assignments page (and also kept in the full syllabus).
-ASSIGNMENT_SECTIONS = ["Laboratory Component", "Lecture Project (20% of Lecture Grade)", "Late Work"]
+FIELD_START = "Required Field Experience"  # paragraph in Course Description where the field-trip text begins
+BANNER = ('<figure class="banner"><img src="assets/syllabus-banner.jpg" width="1600" height="532" '
+          'alt="Photo strip of eleven animals: grizzly bear, mountain lion, bison, coyote, orca, California condor, '
+          'gray wolf, sea otter, black wolf, manatee, and a polar bear with its cub."></figure>')
 
 esc = html.escape
 
@@ -186,7 +188,7 @@ def blocks_html(blocks, base_level=3, table_captions=None, label=None):
         if b.style.name == "Heading 3" or (fully_bold(b) and len(text) < 90):
             last_heading = text
             level = base_level
-            out.append(f'<h{level} id="{slug(text)}">{esc(text)}</h{level}>')
+            out.append(f'<h{level} id="{slug(text.replace("(", "").replace(")", ""))}">{esc(text)}</h{level}>')
         else:
             out.append(f"<p>{runs_html(b)}</p>")
     if in_list:
@@ -287,14 +289,21 @@ NAV = [
     ("schedule.html", "Schedule"),
     ("lectures.html", "Lectures"),
     ("readings.html", "Readings"),
-    ("assignments.html", "Labs &amp; Assignments"),
+    ("labs.html", "Labs"),
+    ("project.html", "Lecture Project"),
+    ("field-experience.html", "Field Experience"),
+    ("resources.html", "Resources"),
+]
+RESOURCE_TABS = [
+    ("resources.html", "Class Resources"),
+    ("resources-university.html", "University Policies &amp; Resources"),
 ]
 
 
-def page(filename, title, body, settings, description=""):
+def page(filename, title, body, settings, description="", section=None):
     nav = []
     for href, label in NAV:
-        cur = ' aria-current="page"' if href == filename else ""
+        cur = ' aria-current="page"' if href == (section or filename) else ""
         nav.append(f'<li><a href="{href}"{cur}>{label}</a></li>')
     robots = '<meta name="robots" content="noindex, nofollow">\n' if not settings["public"] else ""
     full_title = f"{title} | NEUR 411 Neuroethology" if filename != "index.html" else "NEUR 411 Neuroethology, Fall 2026"
@@ -371,6 +380,7 @@ def build_home(sections, cal, lectures, settings):
     events_json = json.dumps(events)
     body = f"""
 <h1>NEUR 411 Neuroethology</h1>
+{BANNER}
 <p class="lede">{runs_html(desc)}</p>
 
 <div class="grid-2">
@@ -391,7 +401,10 @@ def build_home(sections, cal, lectures, settings):
 <li><a href="lectures.html">Lecture slides</a>: all 40 lectures, grouped by exam.</li>
 <li><a href="schedule.html">Course calendar</a>: lectures, exams, labs, field experience and due dates.</li>
 <li><a href="readings.html">Recommended readings</a>: the primary papers behind each lecture, with DOI links.</li>
-<li><a href="assignments.html">Labs and assignments</a>: lab schedule, computational assignments, lecture project and reflection essay.</li>
+<li><a href="labs.html">Labs</a>: lab schedule, report due dates, computational assignments and the reflection essay.</li>
+<li><a href="project.html">Lecture project</a>: the simulation or APA paper options and milestones.</li>
+<li><a href="field-experience.html">Field experience</a>: the required Fall Recess trip, October 8 to 11.</li>
+<li><a href="resources.html">Resources</a>: software, library and study help, and USC policies and support services.</li>
 <li><a href="syllabus.html">Syllabus</a>: grading, exams, policies; also as a <a href="files/NEUR411_Syllabus_Fall2026.pdf">PDF</a> or <a href="files/NEUR411_Syllabus_Fall2026.docx">Word document</a>.</li>
 </ul>
 <p>Grades and assignment submissions are handled in {settings['lms']}. This site holds the course materials.</p>
@@ -438,12 +451,13 @@ def build_syllabus(sections, settings):
         parts.append(f'<section aria-labelledby="{sid}"><h2 id="{sid}">{esc(title)}</h2>\n{blocks_html(blocks, label=title)}</section>')
     body = f"""
 <h1>Syllabus</h1>
+{BANNER}
 <p class="lede">NEUR 411 Neuroethology, Fall 2026. Download the full syllabus as a
 <a href="files/NEUR411_Syllabus_Fall2026.pdf">PDF</a> or a
 <a href="files/NEUR411_Syllabus_Fall2026.docx">Word document</a>.</p>
 <nav class="toc" aria-labelledby="toc-heading">
 <h2 id="toc-heading">On this page</h2>
-<ol>{''.join(toc)}</ol>
+<ol>{''.join(toc)}<li><a href="resources-university.html">University Policies and Resources</a> (separate page)</li></ol>
 </nav>
 {''.join(parts)}
 """
@@ -455,7 +469,7 @@ def build_schedule(sections, cal, settings):
     by = dict(sections)
     intro = blocks_html([b for b in by["Course Calendar"] if isinstance(b, Paragraph)])
     intro = intro.replace("listed in the Lab Schedule above",
-                          'listed on the <a href="assignments.html#lab-schedule-and-due-dates">Labs &amp; Assignments</a> page')
+                          'listed on the <a href="labs.html#lab-schedule-and-due-dates">Labs</a> page')
     rows = []
     for r in cal:
         session = esc(r["session"])
@@ -486,17 +500,20 @@ Exam 3 Lectures 21 to 30 and Exam 4 Lectures 31 to 40.</p>
 
 
 def deck_links(entry, n):
+    """Download button for a deck stored in docs/files/lectures/, otherwise View/Download links to Google Drive."""
     hidden = f'<span class="visually-hidden"> for Lecture {n}</span>'
-    if entry.get("local"):
-        href = f'files/lectures/{entry["local"]}'
-        return (f'<a class="btn" href="{esc(href)}" download>Download slides{hidden}</a> '
-                f'<span class="meta">PowerPoint, {fmt_size(entry["size"])}</span>')
-    fid = entry["drive_id"]
-    view = f"https://drive.google.com/file/d/{fid}/view"
-    dl = f"https://drive.google.com/uc?export=download&amp;id={fid}"
-    return (f'<a class="btn" href="{view}">View slides{hidden}</a> '
-            f'<a class="btn btn-secondary" href="{dl}">Download PowerPoint{hidden}</a> '
-            f'<span class="meta">.pptx, {fmt_size(entry["size"])}</span>')
+    local = entry.get("local") if entry else None
+    path = OUT / "files" / "lectures" / local if local else None
+    if not path or not path.exists():
+        if not entry or not entry.get("drive_id"):
+            return '<span class="meta">Slides will be posted here.</span>'
+        fid = entry["drive_id"]
+        return (f'<a class="btn" href="https://drive.google.com/file/d/{fid}/view">View slides{hidden}</a> '
+                f'<a class="btn btn-secondary" href="https://drive.google.com/uc?export=download&amp;id={fid}">'
+                f'Download PowerPoint{hidden}</a> <span class="meta">.pptx, {fmt_size(entry["size"])}</span>')
+    href = f"files/lectures/{local}"
+    return (f'<a class="btn" href="{esc(href)}" download>Download slides{hidden}</a> '
+            f'<span class="meta">PowerPoint, {fmt_size(path.stat().st_size)}</span>')
 
 
 def lecture_rows(cal):
@@ -520,7 +537,7 @@ def build_lectures(cal, lectures, readings, settings):
         lis = []
         for n, r in items:
             entry = manifest.get(n)
-            links = deck_links(entry, n) if entry else '<span class="meta">Slides not yet posted.</span>'
+            links = deck_links(entry, n)
             nread = len(readings.get(n, []))
             rlink = (f' <a href="readings.html#lecture-{n}">Recommended readings'
                      f'<span class="visually-hidden"> for Lecture {n}</span></a> <span class="meta">({nread})</span>'
@@ -537,11 +554,12 @@ def build_lectures(cal, lectures, readings, settings):
 </section>""")
     body = f"""
 <h1>Lecture slides</h1>
-<p class="lede">Slides for every lecture. Each deck opens in Google Drive, where it can be read in the browser
-without PowerPoint, or downloaded as a PowerPoint file with speaker notes.</p>
-<p>Sign in with your USC Google account if Drive asks for access. Lecture slides are the primary source of
-instruction, and exams are based on lecture content, including material presented in class that is not on
-the slides. Updated versions of each deck will replace these as they are posted.</p>
+<p class="lede">Slides for every lecture. <strong>View slides</strong> opens a deck in your browser;
+<strong>Download PowerPoint</strong> saves the file, with speaker notes, to your computer.</p>
+<p>The slides are stored in Google Drive. If Drive asks you to sign in, use your USC account
+(your @usc.edu email). Downloaded files open in PowerPoint, Keynote, Google Slides or LibreOffice Impress. Lecture slides are the
+primary source of instruction, and exams are based on lecture content, including material presented in
+class that is not on the slides. Updated versions of each deck will replace these as they are posted.</p>
 <nav class="toc" aria-label="Lecture groups"><ul class="inline">
 <li><a href="#exam-1">Lectures 1 to 10</a></li><li><a href="#exam-2">11 to 20</a></li>
 <li><a href="#exam-3">21 to 30</a></li><li><a href="#exam-4">31 to 40</a></li></ul></nav>
@@ -578,17 +596,98 @@ def build_readings(sections, cal, readings, settings):
                 "Recommended primary readings for each NEUR 411 lecture.")
 
 
-def build_assignments(sections, settings):
-    parts = [section_html(sections, t) for t in ASSIGNMENT_SECTIONS]
+def build_labs(sections, settings):
     body = f"""
-<h1>Labs and assignments</h1>
-<p class="lede">The lab schedule, report due dates, computational assignments, lecture project and the
-Captivity and Conservation Reflection. Submit work in {settings['lms']} or Gradescope as directed; grading
-weights are in the <a href="syllabus.html#grading">syllabus</a>.</p>
-{''.join(parts)}
+<h1>Labs</h1>
+<p class="lede">The laboratory component is half of your course grade. This page has the lab rules, the lab
+schedule with report due dates, the computational assignments and the Captivity and Conservation Reflection.
+Submit lab observations to <a href="https://www.gradescope.com/">Gradescope</a> before you leave each lab and
+reports in {settings['lms']}.</p>
+{section_html(sections, "Laboratory Component")}
+{section_html(sections, "Late Work")}
 """
-    return page("assignments.html", "Labs & Assignments", body, settings,
-                "Lab schedule, assignments and project milestones for NEUR 411.")
+    return page("labs.html", "Labs", body, settings,
+                "Lab schedule, report due dates and computational assignments for NEUR 411.")
+
+
+def build_project(sections, settings):
+    body = f"""
+<h1>Lecture project</h1>
+<p class="lede">The lecture project is 20 percent of the lecture grade. Choose a simulation project or a
+10-page APA paper on one animal system covered in class; the choice is due with your proposal.</p>
+{section_html(sections, "Lecture Project (20% of Lecture Grade)", sid="lecture-project")}
+{section_html(sections, "Academic Integrity and Use of AI Tools")}
+<p>Late submissions: a 30% deduction applies to any project submitted after 11:59 PM on the due date, and
+projects more than 48 hours late are not accepted (see <a href="labs.html#late-work">Late Work</a>).
+Papers for Option B are found through the <a href="resources.html#papers">library and search tools</a>
+on the Resources page.</p>
+"""
+    return page("project.html", "Lecture Project", body, settings,
+                "Lecture project options, milestones and AI policy for NEUR 411.")
+
+
+def build_field(sections, cal, settings):
+    blocks = dict(sections)["Course Description"]
+    start = next(i for i, b in enumerate(blocks)
+                 if isinstance(b, Paragraph) and b.text.strip().startswith(FIELD_START))
+    field = blocks[start + 1:]
+    rows = []
+    for r in cal:
+        if r["kind"] != "special":
+            continue
+        when = f'<time datetime="{r["date"].isoformat()}">{esc(r["date_label"])}</time>' if r["date"] else esc(r["date_label"])
+        rows.append(f'<tr><th scope="row">{when}</th><td>{r["topic_html"]}</td></tr>')
+    table = ('<table><caption>Field experience days and special topics</caption><thead><tr>'
+             '<th scope="col">Date (2026)</th><th scope="col">Site and special topic</th></tr></thead>'
+             f'<tbody>{"".join(rows)}</tbody></table>')
+    body = f"""
+<h1>Field experience: Fall Recess</h1>
+{blocks_html(field, base_level=2, label="Field experience")}
+<h2 id="days">The four days</h2>
+{wrap_table(table, "Field experience days")}
+<p>The trip is evaluated through the Captivity and Conservation Reflection, a 5-page essay due Sat Nov 21
+(details on the <a href="labs.html#laboratory-component">Labs</a> page).</p>
+"""
+    return page("field-experience.html", "Field Experience", body, settings,
+                "The required Fall Recess field experience for NEUR 411.")
+
+
+def resource_tabs(current):
+    items = []
+    for href, label in RESOURCE_TABS:
+        cur = ' aria-current="page"' if href == current else ""
+        items.append(f'<li><a href="{href}"{cur}>{label}</a></li>')
+    return f'<nav class="subnav" aria-label="Resources"><ul>{"".join(items)}</ul></nav>'
+
+
+def build_resources(sections, settings):
+    from_syllabus = [section_html(sections, t) for t in
+                     ("Teaching Assistants", "Communication", "Course Materials",
+                      "Lecture Recordings and Study Materials", "Study Expectations")]
+    body = f"""
+<h1>Resources</h1>
+{resource_tabs("resources.html")}
+<p class="lede">Where to get help and the tools you need for this course. University policies and campus
+support services are under <a href="resources-university.html">University Policies &amp; Resources</a>.</p>
+{(SRC / "class_resources.html").read_text()}
+{''.join(from_syllabus)}
+"""
+    return page("resources.html", "Class Resources", body, settings,
+                "Course platforms, software, library and study resources for NEUR 411.", section="resources.html")
+
+
+def build_university(settings):
+    body = f"""
+<h1>Resources</h1>
+{resource_tabs("resources-university.html")}
+<p class="lede">USC policies that apply to every course, and the university's support services for students.
+In an emergency, call <a href="tel:+12137404321">(213) 740-4321</a> (UPC) or
+<a href="tel:+13234421000">(323) 442-1000</a> (HSC), or 911.</p>
+{(SRC / "university_resources.html").read_text()}
+"""
+    return page("resources-university.html", "University Policies & Resources", body, settings,
+                "USC academic integrity, recording, accommodation policies and student support services.",
+                section="resources.html")
 
 
 def build_accessibility(settings):
@@ -643,13 +742,18 @@ def main():
     readings = read_readings(next(b for b in by["Readings Calendar"] if isinstance(b, Table)))
 
     OUT.mkdir(exist_ok=True)
+    (OUT / "assignments.html").unlink(missing_ok=True)
     pages = {
         "index.html": build_home(sections, cal, lectures, settings),
         "syllabus.html": build_syllabus(sections, settings),
         "schedule.html": build_schedule(sections, cal, settings),
         "lectures.html": build_lectures(cal, lectures, readings, settings),
         "readings.html": build_readings(sections, cal, readings, settings),
-        "assignments.html": build_assignments(sections, settings),
+        "labs.html": build_labs(sections, settings),
+        "project.html": build_project(sections, settings),
+        "field-experience.html": build_field(sections, cal, settings),
+        "resources.html": build_resources(sections, settings),
+        "resources-university.html": build_university(settings),
         "accessibility.html": build_accessibility(settings),
     }
     for name, content in pages.items():

@@ -167,3 +167,20 @@ tr.row-special td:nth-child(3) { font-style: normal; }
   tr.row-exam th:first-child { box-shadow: none; }
   tr.row-exam { box-shadow: inset 4px 0 0 var(--exam-rule); padding-left: 0.9rem; }
 }
+
+/* syllabus banner photo */
+.banner { margin: 0 0 1.5rem; }
+.banner img { display: block; width: 100%; height: auto; border-radius: 4px; }
+
+/* resources sub-tabs */
+.subnav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0 0 1.5rem; border-bottom: 1px solid var(--rule); }
+.subnav li { margin: 0; }
+.subnav a { display: inline-block; padding: 0.5rem 0.9rem; min-height: 2.75rem; color: var(--text); text-decoration: none;
+  border: 1px solid var(--rule); border-bottom: 0; border-radius: 4px 4px 0 0; background: var(--surface); }
+.subnav a:hover { text-decoration: underline; }
+.subnav a[aria-current="page"] { background: var(--bg); font-weight: 600; box-shadow: inset 0 3px 0 var(--accent); margin-bottom: -1px; padding-bottom: calc(0.5rem + 1px); }
+
+/* university support services */
+.resource-list dt { font-weight: 600; margin-top: 1.25rem; font-size: 1.05rem; }
+.resource-list dd { margin: 0.2rem 0 0; max-width: 72ch; }
+.resource-list dd.phone { color: var(--muted); }
