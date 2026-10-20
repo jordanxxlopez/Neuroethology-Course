@@ -171,3 +171,19 @@ tr.row-special td:nth-child(3) { font-style: normal; }
 
 /* special topics */
 .topic-list li { margin-bottom: 0.5rem; }
+
+/* announcements */
+.latest { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 4px; padding: 0.25rem 1.25rem 0.5rem; margin: 2rem 0; }
+.latest h2 { border: 0; margin-top: 0.75rem; padding-top: 0; font-size: 1.15rem; }
+.latest h3 { margin: 0.25rem 0 0.1rem; }
+.announcement { border-top: 1px solid var(--rule); margin-top: 2rem; }
+.announcement h2 { border: 0; margin-bottom: 0.2rem; }
+.announcement table { max-width: 36rem; }
+th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.total th, tr.total td { font-weight: 700; border-top: 2px solid var(--text); }
+figure.chart { margin: 1.5rem 0; max-width: 56rem; }
+figure.chart img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
+.signature { font-weight: 600; }
+@media (max-width: 40rem) {
+  .announcement th, .announcement td { padding: 0.45rem 0.4rem; }
+}

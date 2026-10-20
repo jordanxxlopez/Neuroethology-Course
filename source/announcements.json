@@ -1,0 +1,6 @@
+{
+  "_note": "Course announcements, newest first. Each entry's body is an HTML file in source/announcements/. Exam announcements always include the score-distribution chart (make it with tools/exam_chart.py).",
+  "announcements": [
+    {"id": "exam-2-grades", "date": "2026-10-20", "title": "Exam 2 grades are posted", "file": "2026-10-20-exam-2-grades.html"}
+  ]
+}

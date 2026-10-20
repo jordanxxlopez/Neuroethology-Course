@@ -285,6 +285,7 @@ def reading_html(ref):
 
 NAV = [
     ("index.html", "Home"),
+    ("announcements.html", "Announcements"),
     ("syllabus.html", "Syllabus"),
     ("schedule.html", "Schedule"),
     ("lectures.html", "Lectures"),
@@ -361,6 +362,50 @@ def section_html(sections, title, level=2, sid=None):
 
 # ---------------------------------------------------------------- pages
 
+def load_announcements():
+    data = json.loads((SRC / "announcements.json").read_text())
+    items = []
+    for a in data["announcements"]:
+        d = dt.date.fromisoformat(a["date"])
+        body = (SRC / "announcements" / a["file"]).read_text()
+        items.append({**a, "d": d, "when": d.strftime("%A, %B %-d, %Y"), "body": body})
+    return sorted(items, key=lambda a: a["d"], reverse=True)
+
+
+def latest_announcement_html():
+    items = load_announcements()
+    if not items:
+        return ""
+    a = items[0]
+    first = re.search(r"<p>(.*?)</p>", a["body"], re.S)
+    excerpt = f"<p>{first.group(1)}</p>" if first else ""
+    return f"""<section aria-labelledby="latest" class="latest">
+<h2 id="latest">Latest announcement</h2>
+<h3><a href="announcements.html#{a['id']}">{esc(a['title'])}</a></h3>
+<p class="meta"><time datetime="{a['d'].isoformat()}">{a['when']}</time></p>
+{excerpt}
+<p><a href="announcements.html#{a['id']}">Read the full announcement<span class="visually-hidden">: {esc(a['title'])}</span></a>
+<span aria-hidden="true">·</span> <a href="announcements.html">All announcements</a></p>
+</section>"""
+
+
+def build_announcements(settings):
+    parts = []
+    for a in load_announcements():
+        parts.append(f"""<article class="announcement" aria-labelledby="{a['id']}">
+<h2 id="{a['id']}">{esc(a['title'])}</h2>
+<p class="meta"><time datetime="{a['d'].isoformat()}">{a['when']}</time></p>
+{a['body']}
+</article>""")
+    body = f"""
+<h1>Announcements</h1>
+<p class="lede">Course announcements, newest first. Grades are in {settings['lms']}.</p>
+{''.join(parts) or '<p>No announcements yet.</p>'}
+"""
+    return page("announcements.html", "Announcements", body, settings,
+                "Announcements for NEUR 411 Neuroethology, Fall 2026.")
+
+
 def build_home(sections, cal, lectures, settings):
     by = dict(sections)
     desc = next(b for b in by["Course Description"] if isinstance(b, Paragraph) and b.text.strip())
@@ -396,6 +441,8 @@ def build_home(sections, cal, lectures, settings):
 {blocks_html(times, label="Course times and locations")}
 </section>
 </div>
+
+{latest_announcement_html()}
 
 <section aria-labelledby="materials">
 <h2 id="materials">Course materials</h2>
@@ -799,6 +846,7 @@ def main():
         "project.html": build_project(sections, settings),
         "field-experience.html": build_field(sections, cal, settings),
         "special-topics.html": build_special(settings),
+        "announcements.html": build_announcements(settings),
         "resources.html": build_resources(sections, settings),
         "resources-university.html": build_university(settings),
         "accessibility.html": build_accessibility(settings),
