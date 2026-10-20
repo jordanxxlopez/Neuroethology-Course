@@ -19,20 +19,20 @@ START, END = dt.date(2027, 1, 11), dt.date(2027, 4, 30)
 HOLIDAYS = {dt.date(2027, 1, 18): "Martin Luther King Jr. Day", dt.date(2027, 2, 15): "Presidents' Day"}
 RECESS = (dt.date(2027, 3, 14), dt.date(2027, 3, 21))
 
-SPECIAL = {  # placed after this lecture number
-    17: (1, "Dolphins I: anatomy/neural pathways supporting echolocation & biosonar, auditory scene analysis "
-            "during prey tracking and hunting strategies", 2, [
-        "Cranford TW; Krysl P; Amundin M (2010). A New Acoustic Portal into the Odontocete Ear and Vibrational "
-        "Analysis of the Tympanoperiotic Complex. PLoS ONE 5(8): e11927. https://doi.org/10.1371/journal.pone.0011927",
-        "Ladegaard M; Mulsow J; Houser DS; Jensen FH; Johnson M; Madsen PT; Finneran JJ (2019). Dolphin echolocation "
-        "behaviour during active long-range target approaches. Journal of Experimental Biology 222: jeb189217. "
-        "https://doi.org/10.1242/jeb.189217",
-        "Madsen PT; Siebert U; Elemans CPH (2023). Toothed whales use distinct vocal registers for echolocation and "
-        "communication. Science 379(6635): 928-933. https://doi.org/10.1126/science.adc9570",
-        "Berns GS; Cook PF; Foxley S; Jbabdi S; Miller KL; Marino L (2015). Diffusion tensor imaging of dolphin brains "
-        "reveals direct auditory pathway to temporal lobe. Proceedings of the Royal Society B 282(1811): 20151203. "
-        "https://doi.org/10.1098/rspb.2015.1203"]),
-    22: (2, "Axolotl: lateral-line sensing, electroreception, and sensory processing of courtship signals", 3, [
+SPECIAL = {  # exam number: (special topic number, title, readings); given in the lecture slot on that exam day
+    1: (1, "Jellyfish I: neuroanatomy of Cassiopea, distributed nerve nets, rhopalia, and pacemaker control of rhythmic "
+           "bell contractions", [
+        "Amplatz K, Zieger E, Abed-Navandi D, Weissenbacher A, Wanninger A (2024). Neuromuscular development in the "
+        "emerging scyphozoan model system, Cassiopea xamachana: implications for the evolution of cnidarian nervous "
+        "systems. Frontiers in Neuroscience 17: 1324980. https://doi.org/10.3389/fnins.2023.1324980",
+        "Nakanishi N, Hartenstein V, Jacobs DK (2009). Development of the rhopalial nervous system in Aurelia sp.1 "
+        "(Cnidaria, Scyphozoa). Development Genes and Evolution 219(6): 301-317. https://doi.org/10.1007/s00427-009-0291-y",
+        "Muffett KM, Mammone M, Puckett J, Martino G, Aditi, Miglietta MP (2025). Regeneration and Musculature in Halved "
+        "Cassiopea xamachana Ephyrae. Integrative Organismal Biology 7(1): obaf030. https://doi.org/10.1093/iob/obaf030",
+        "Anuszczyk SR, Yoder N, Costello JH, Dabiri JO, Gemmell BJ, Rutledge KM, Colin SP (2025). Increasing the "
+        "Reliability and Versatility of Jellyfish Biohybrid Vehicles via Species Selection and Rhopalia Removal. "
+        "Biomimetics 10(12): 810. https://doi.org/10.3390/biomimetics10120810"]),
+    2: (2, "Axolotl: lateral-line sensing, electroreception, and sensory processing of courtship signals", [
         "Wang Y, Pan Y, Liu X, Zhang X, Fan C, Wang J (2026). Characterization of the electrosensory receptor in axolotl "
         "and the role of voltage-gated potassium channels in electrosensitivity. Comparative Biochemistry and Physiology "
         "Part A 319:112051. https://doi.org/10.1016/j.cbpa.2026.112051",
@@ -43,7 +43,7 @@ SPECIAL = {  # placed after this lecture number
         "https://doi.org/10.1007/BF00192570",
         "Maex M, Van Bocxlaer I, Mortier A, Proost P, Bossuyt F (2016). Courtship Pheromone Use in a Model Urodele, the "
         "Mexican Axolotl (Ambystoma mexicanum). Scientific Reports 6:20184. https://doi.org/10.1038/srep20184"]),
-    33: (3, "Songbirds I: Artificial song memories, optogenetic tutoring, and neural mechanisms of vocal imitation", 4, [
+    3: (3, "Songbirds I: Artificial song memories, optogenetic tutoring, and neural mechanisms of vocal imitation", [
         "Zhao W, Garcia-Oscos F, Dinh D, Roberts TF (2019). Inception of memories that guide vocal learning in the "
         "songbird. Science 366:83–89. https://doi.org/10.1126/science.aaw4226",
         "Roberts TF, Gobes SMH, Murugan M, Ölveczky BP, Mooney R (2012). Motor circuits are required to encode a sensory "
@@ -54,9 +54,9 @@ SPECIAL = {  # placed after this lecture number
         "onset of behavioural learning. Nature 463:948–952. https://doi.org/10.1038/nature08759"]),
 }
 EXAMS = {1: (dt.date(2027, 2, 8), "Covers Lectures 1 to 10", "12:00 PM, NEU 100A or NEU 100B"),
-         2: (dt.date(2027, 3, 8), "Covers Lectures 11 to 20 and Special Topic 1", "12:00 PM, NEU 100A or NEU 100B"),
-         3: (dt.date(2027, 4, 12), "Covers Lectures 21 to 30 and Special Topic 2", "12:00 PM, NEU 100A or NEU 100B"),
-         4: (dt.date(2027, 5, 10), "Covers Lectures 31 to 40 and Special Topic 3",
+         2: (dt.date(2027, 3, 8), "Covers Lectures 11 to 20", "12:00 PM, NEU 100A or NEU 100B"),
+         3: (dt.date(2027, 4, 12), "Covers Lectures 21 to 30", "12:00 PM, NEU 100A or NEU 100B"),
+         4: (dt.date(2027, 5, 10), "Covers Lectures 31 to 40",
              "12:00 PM, NEU 100A or NEU 100B (final examination period)")}
 LABS = [  # lab, week, Version 2 topic, report due
     ("Lab 1", 1, "Ethograms and Tinbergen's four questions: quantitative observation of zebrafish behavior from recorded video", dt.date(2027, 1, 24)),
@@ -65,10 +65,10 @@ LABS = [  # lab, week, Version 2 topic, report due
     ("Lab 4", 5, "Toad prey-catching: worm versus anti-worm stimulus tuning from recorded behavior", dt.date(2027, 2, 21)),
     ("Lab 5", 6, "Jumping spider visual tracking: saccades and pursuit from video", dt.date(2027, 2, 28)),
     ("Lab 6", 8, "Moth hearing and bat evasion: auditory receptor responses to ultrasound and evasive flight", dt.date(2027, 3, 14)),
-    ("Lab 7", 9, "Weakly electric fish: electric organ discharge recordings and the jamming avoidance response", dt.date(2027, 3, 29)),
+    ("Lab 7", 9, "Weakly electric fish: electric organ discharge recordings and active electrolocation", dt.date(2027, 3, 29)),
     ("Lab 8", 12, "Rapid prey capture: star-nosed mole handling times and archerfish shot geometry from high-speed video", dt.date(2027, 4, 11)),
     ("Lab 9", 13, "Orientation and navigation: circular statistics on monarch butterfly and desert ant headings", dt.date(2027, 4, 18)),
-    ("Lab 10", 14, "Song learning: tutor–pupil song similarity in zebra finches", dt.date(2027, 4, 25)),
+    ("Lab 10", 14, "Songbird song structure: syllable segmentation and song stereotypy in zebra finch recordings", dt.date(2027, 4, 25)),
 ]
 MAKEUP_WEEK = 16
 COMP = [dt.date(2027, 2, 4), dt.date(2027, 3, 11), dt.date(2027, 4, 15)]
@@ -183,14 +183,20 @@ def main():
     global NOTE_SIZE
     NOTE_SIZE = next(r.font.size for r in t_due.cells[3].paragraphs[0].runs if r.text.strip())
     # order of sessions: 40 lectures with the three special topics after their lectures
-    seq = []
-    for n in range(1, 41):
-        seq.append(("L", n))
-        if n in SPECIAL:
-            seq.append(("ST", n))
     days = class_days()
-    assert len(days) == len(seq) == 43, (len(days), len(seq))
-    when = dict(zip(seq, days))
+    when, n, pending = {}, 0, None
+    for d in days:
+        if pending and d.weekday() == 0:
+            when[("ST", pending)] = d
+            pending = None
+            continue
+        n += 1
+        when[("L", n)] = d
+        if n in (10, 20, 30):
+            pending = n // 10
+    assert n == 40 and len(when) == 43, (n, len(when))
+    for ex, (d, _, _) in EXAMS.items():
+        assert ex == 4 or when[("ST", ex)] == d, (ex, d)
 
     notes_extra = {PROPOSAL: "Project proposal due 11:59 PM", PROGRESS: "Project progress check due 11:59 PM"}
     events = []  # (date, order, row)
@@ -208,9 +214,9 @@ def main():
             notes = [x for x in notes if "Project" not in x] + extra
             add(d, 1, src, [[short(d)], [f"Lecture {n}"], None, notes or [""]])
         else:
-            st, title, exam, _ = SPECIAL[n]
+            st, title, _ = SPECIAL[n]
             add(d, 1, fall_rows[2], [[short(d)], [f"Special Topic {st}"], [title],
-                                     [f"Covered on Exam {exam}"] + extra])
+                                     ["Not on the exam"] + extra])
     for n, (d, cover, note) in EXAMS.items():
         add(d, 2, t_exam, [[short(d)], [f"Exam {n}"], [cover], [note]])
     for i, (lab, wk, topic, due) in enumerate(LABS):
@@ -254,7 +260,7 @@ def main():
             row = _Row(tr, readings)
             set_cell(row.cells[0], [short(d)])
         else:
-            st, title, exam, refs = SPECIAL[n]
+            st, title, refs = SPECIAL[n]
             tr = copy.deepcopy(read_rows[1]._tr)
             readings._tbl.append(tr)
             row = _Row(tr, readings)
@@ -275,10 +281,6 @@ def main():
     set_cell(labs_t.rows[15].cells[1], [short(REFLECTION)])
 
     # grading table and project milestones
-    for row in grading.rows[2:5]:
-        m = re.match(r"Exam (\d)", row.cells[0].text)
-        if m:
-            replace(row.cells[0].paragraphs[0], ")", f" and Special Topic {int(m.group(1)) - 1})")
     for row, d in zip(milestones.rows[1:4], (PROPOSAL, PROGRESS, FINAL)):
         set_cell(row.cells[1], [f"{short(d)}, 11:59 PM"])
 
@@ -292,12 +294,9 @@ def main():
                      ("Saturday, October 10:", "Saturday, March 20:"), ("Sunday, October 11:", "Sunday, March 21:")):
         replace(find_par(doc, old), old, new)
     p = find_par(doc, "There are four exams")
-    replace(p, "and each covers exactly ten lectures. Exam 1 covers Lectures 1 to 10, Exam 2 covers Lectures 11 to 20, "
-               "Exam 3 covers Lectures 21 to 30, and Exam 4 covers Lectures 31 to 40.",
-            "and each covers ten lectures; Exams 2, 3, and 4 also cover one special topic. Exam 1 covers Lectures 1 to "
-            "10, Exam 2 covers Lectures 11 to 20 and Special Topic 1, Exam 3 covers Lectures 21 to 30 and Special Topic "
-            "2, and Exam 4 covers Lectures 31 to 40 and Special Topic 3.")
-    replace(p, "and they start on time.", "and they start on time. Exam 4 is given during the final examination period.")
+    replace(p, "and they start on time.", "and they start on time. Exam 4 is given during the final examination "
+               "period. On the days of Exams 1, 2, and 3, the lecture is a special topic; special topics are not "
+               "covered on any exam.")
     p = find_par(doc, "Captivity and Conservation Reflection (15%)")
     replace(p, "Fall Recess Field Experience", "Spring Recess Field Experience")
     replace(p, "The essay is due Sat Nov 21.", f"The essay is due {short(REFLECTION)}.")

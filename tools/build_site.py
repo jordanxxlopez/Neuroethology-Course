@@ -632,9 +632,11 @@ def exam_of(key, r):
 def build_lectures(cal, lectures, readings, settings):
     manifest = {("L", e["n"]): e for e in lectures["lectures"]}
     manifest.update({("ST", e["st"]): e for e in lectures.get("special_topics", [])})
-    blocks = {1: [], 2: [], 3: [], 4: []}
+    blocks, block = {1: [], 2: [], 3: [], 4: []}, 1
     for key, r in item_rows(cal):
-        blocks.setdefault(exam_of(key, r), []).append((key, r))
+        if key[0] == "L":
+            block = exam_of(key, r)
+        blocks[block].append((key, r))  # a special topic sits with the lectures around it
     exam_dates = {int(re.search(r"\d+", r["session"]).group()): r["date_label"]
                   for r in cal if r["kind"] == "exam"}
     out = []
@@ -642,8 +644,6 @@ def build_lectures(cal, lectures, readings, settings):
         if exam is None:
             continue
         lo, hi = (exam - 1) * 10 + 1, exam * 10
-        n_st = sum(1 for k, _ in items if k[0] == "ST")
-        extra = f" and Special Topic {next(k[1] for k, _ in items if k[0] == 'ST')}" if n_st == 1 else ""
         lis = []
         for key, r in items:
             name, iid = item_name(key), item_id(key)
@@ -654,13 +654,15 @@ def build_lectures(cal, lectures, readings, settings):
                      if nread else "")
             when = f'<time datetime="{r["date"].isoformat()}">{esc(r["date_label"])}</time>' if r["date"] else ""
             cls = "lecture special" if key[0] == "ST" else "lecture"
+            if key[0] == "ST":
+                when += f' <span aria-hidden="true">·</span> {r["notes_html"]}' 
             lis.append(f"""<li class="{cls}" id="{iid}">
 <h3><span class="lnum">{name}</span> {r['topic_html']}</h3>
 <p class="meta">{when}</p>
 <p class="actions">{links}{rlink}</p>
 </li>""")
         out.append(f"""<section aria-labelledby="exam-{exam}">
-<h2 id="exam-{exam}">Lectures {lo} to {hi}{extra} <span class="meta">(Exam {exam}, {esc(exam_dates.get(exam, ''))})</span></h2>
+<h2 id="exam-{exam}">Lectures {lo} to {hi} <span class="meta">(Exam {exam}, {esc(exam_dates.get(exam, ''))})</span></h2>
 <ol class="lecture-list">{''.join(lis)}</ol>
 </section>""")
     body = f"""
@@ -786,7 +788,8 @@ def build_special(settings, cal):
         lis = "".join(f'<li><a href="lectures.html#{item_id(k)}">{item_name(k)}</a> ({esc(r["date_label"])}): '
                       f'{r["topic_html"]} <span class="meta">{r["notes_html"]}</span></li>' for k, r in sched)
         scheduled_html = (f'<section aria-labelledby="this-term"><h2 id="this-term">On the schedule this semester</h2>'
-                          f'<p>These special topics are part of the {TERM} schedule and are covered on the exams.</p>'
+                          f'<p>These special topics are part of the {TERM} schedule. Each one is the lecture on an exam day, '
+                          f'and none of them is covered on an exam.</p>'
                           f'<ul>{lis}</ul></section>')
     body = f"""
 <h1>Special topics</h1>
