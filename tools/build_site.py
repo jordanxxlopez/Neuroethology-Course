@@ -788,8 +788,9 @@ def build_special(settings, cal):
         lis = "".join(f'<li><a href="lectures.html#{item_id(k)}">{item_name(k)}</a> ({esc(r["date_label"])}): '
                       f'{r["topic_html"]} <span class="meta">{r["notes_html"]}</span></li>' for k, r in sched)
         scheduled_html = (f'<section aria-labelledby="this-term"><h2 id="this-term">On the schedule this semester</h2>'
-                          f'<p>These special topics are part of the {TERM} schedule. Each one is the lecture on an exam day, '
-                          f'and none of them is covered on an exam.</p>'
+                          f'<p>These special topics are part of the {TERM} schedule. Each one is the lecture on an exam day '
+                          f'and may appear as 2 to 4 questions on the next exam, but special topics are not a major '
+                          f'emphasis.</p>'
                           f'<ul>{lis}</ul></section>')
     body = f"""
 <h1>Special topics</h1>

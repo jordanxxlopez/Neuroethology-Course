@@ -54,9 +54,9 @@ SPECIAL = {  # exam number: (special topic number, title, readings); given in th
         "onset of behavioural learning. Nature 463:948–952. https://doi.org/10.1038/nature08759"]),
 }
 EXAMS = {1: (dt.date(2027, 2, 8), "Covers Lectures 1 to 10", "12:00 PM, NEU 100A or NEU 100B"),
-         2: (dt.date(2027, 3, 8), "Covers Lectures 11 to 20", "12:00 PM, NEU 100A or NEU 100B"),
-         3: (dt.date(2027, 4, 12), "Covers Lectures 21 to 30", "12:00 PM, NEU 100A or NEU 100B"),
-         4: (dt.date(2027, 5, 10), "Covers Lectures 31 to 40",
+         2: (dt.date(2027, 3, 8), "Covers Lectures 11 to 20 (and 2–4 questions on Special Topic 1)", "12:00 PM, NEU 100A or NEU 100B"),
+         3: (dt.date(2027, 4, 12), "Covers Lectures 21 to 30 (and 2–4 questions on Special Topic 2)", "12:00 PM, NEU 100A or NEU 100B"),
+         4: (dt.date(2027, 5, 10), "Covers Lectures 31 to 40 (and 2–4 questions on Special Topic 3)",
              "12:00 PM, NEU 100A or NEU 100B (final examination period)")}
 LABS = [  # lab, week, Version 2 topic, report due
     ("Lab 1", 1, "Ethograms and Tinbergen's four questions: quantitative observation of zebrafish behavior from recorded video", dt.date(2027, 1, 24)),
@@ -216,7 +216,7 @@ def main():
         else:
             st, title, _ = SPECIAL[n]
             add(d, 1, fall_rows[2], [[short(d)], [f"Special Topic {st}"], [title],
-                                     ["Not on the exam"] + extra])
+                                     [f"2–4 questions on Exam {st + 1}"] + extra])
     for n, (d, cover, note) in EXAMS.items():
         add(d, 2, t_exam, [[short(d)], [f"Exam {n}"], [cover], [note]])
     for i, (lab, wk, topic, due) in enumerate(LABS):
@@ -295,8 +295,9 @@ def main():
         replace(find_par(doc, old), old, new)
     p = find_par(doc, "There are four exams")
     replace(p, "and they start on time.", "and they start on time. Exam 4 is given during the final examination "
-               "period. On the days of Exams 1, 2, and 3, the lecture is a special topic; special topics are not "
-               "covered on any exam.")
+               "period. On the days of Exams 1, 2, and 3, the lecture is a special topic. Each special topic may appear "
+               "as 2 to 4 questions on the next exam (Special Topic 1 on Exam 2, Special Topic 2 on Exam 3, and "
+               "Special Topic 3 on Exam 4), but special topics are not a major emphasis.")
     p = find_par(doc, "Captivity and Conservation Reflection (15%)")
     replace(p, "Fall Recess Field Experience", "Spring Recess Field Experience")
     replace(p, "The essay is due Sat Nov 21.", f"The essay is due {short(REFLECTION)}.")
