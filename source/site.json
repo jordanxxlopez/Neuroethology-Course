@@ -1,5 +1,20 @@
 {
-  "_note": "public: false adds noindex tags and a robots.txt that asks search engines not to list the site. Set to true when the course goes public.",
+  "_note": "public: false adds noindex tags and a robots.txt that asks search engines not to list the site. Set to true when the course goes public. terms: links to each semester's site, relative to this one.",
   "public": false,
-  "lms": "Brightspace"
+  "lms": "Brightspace",
+  "term": "Fall 2026",
+  "year": 2026,
+  "syllabus": "JL_NEUR411.docx",
+  "field_label": "Fall Recess",
+  "field_dates": "October 8 to 11",
+  "terms": [
+    {
+      "label": "Fall 2026",
+      "href": "index.html"
+    },
+    {
+      "label": "Spring 2027",
+      "href": "spring-2027/index.html"
+    }
+  ]
 }

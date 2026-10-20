@@ -30,6 +30,22 @@ python3 tools/build_site.py
 - **Class and university resources** are edited in `source/class_resources.html` and
   `source/university_resources.html`.
 
+## Spring 2027
+
+The Spring 2027 site is built from `source/spring-2027/` into `docs/spring-2027/` and linked from every page
+through the **Semester** links in the header. Fall 2026 is unchanged.
+
+```bash
+python3 tools/build_site.py              # Fall 2026  -> docs/
+python3 tools/build_site.py spring-2027  # Spring 2027 -> docs/spring-2027/
+```
+
+- `source/spring-2027/JL_NEUR411_Spring2027.docx` is the spring syllabus. It was made from the fall syllabus by
+  `tools/make_spring_2027_syllabus.py`, which changes only the term, dates, special topics, exam coverage and the
+  Version 2 lab topics. Edit the Word file directly from now on, then rebuild.
+- `source/spring-2027/lectures.json` links the same lecture decks as fall plus the three scheduled special topics.
+  Share those three decks (SPECIAL TOPICS folder) with USC as Viewer so their links open.
+
 ## Publish (GitHub Pages)
 
 Repository **Settings → Pages → Build and deployment → Deploy from a branch**, pick the branch and the

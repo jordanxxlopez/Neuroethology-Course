@@ -1,0 +1,21 @@
+{
+  "_note": "Spring 2027 site settings. Built with: python3 tools/build_site.py spring-2027",
+  "public": false,
+  "lms": "Brightspace",
+  "term": "Spring 2027",
+  "year": 2027,
+  "syllabus": "JL_NEUR411_Spring2027.docx",
+  "field_label": "Spring Recess",
+  "field_dates": "March 18 to 21",
+  "asset_prefix": "../",
+  "terms": [
+    {
+      "label": "Fall 2026",
+      "href": "../index.html"
+    },
+    {
+      "label": "Spring 2027",
+      "href": "index.html"
+    }
+  ]
+}

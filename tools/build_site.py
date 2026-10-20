@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """Build the NEUR 411 course website from the syllabus and the lecture manifest.
 
-Sources (edit these, then rebuild):
-  source/JL_NEUR411.docx   the syllabus; every policy, the calendar and the readings come from it
-  source/lectures.json     one Google Drive file (or local file) per lecture deck
-  source/site.json         site-wide settings (search-engine visibility, LMS name)
+Each semester has its own sources; the default is Fall 2026 in source/, other terms in source/<term>/:
+  site.json                term name, year, syllabus file, field-trip label, links to the other semesters
+  <syllabus>.docx          the syllabus; every policy, the calendar and the readings come from it
+  lectures.json            one Google Drive file per lecture deck (and per scheduled special topic)
+  announcements.json       announcements, with their HTML in announcements/
+Shared by every term (in source/): special_topics.json, class_resources.html, university_resources.html.
 
-Output: docs/ (served by GitHub Pages). Run:  python3 tools/build_site.py
+Output: docs/ for Fall 2026, docs/<term>/ for other terms (served by GitHub Pages).
+Run:  python3 tools/build_site.py            (Fall 2026)
+      python3 tools/build_site.py spring-2027
 Requires: python-docx. Optional: LibreOffice (soffice) to refresh the syllabus PDF.
 """
 import datetime as dt
@@ -24,17 +28,34 @@ from docx.text.hyperlink import Hyperlink
 from docx.text.paragraph import Paragraph
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "source"
+SRC = ROOT / "source"          # shared sources
+TERM_SRC = SRC                  # this semester's sources
 OUT = ROOT / "docs"
 SYLLABUS = SRC / "JL_NEUR411.docx"
 YEAR = 2026
+TERM = "Fall 2026"
+A = ""                          # path prefix to the shared docs/assets folder
+STUB = "NEUR411_Syllabus_Fall2026"
+
+
+def configure(term_dir):
+    """Point the build at one semester's sources and output folder; returns its settings."""
+    global TERM_SRC, OUT, SYLLABUS, YEAR, TERM, A, STUB
+    if term_dir:
+        TERM_SRC, OUT = SRC / term_dir, ROOT / "docs" / term_dir
+    settings = json.loads((TERM_SRC / "site.json").read_text())
+    SYLLABUS = TERM_SRC / settings["syllabus"]
+    YEAR, TERM, A = settings["year"], settings["term"], settings.get("asset_prefix", "")
+    STUB = "NEUR411_Syllabus_" + TERM.replace(" ", "")
+    return settings
 
 # Syllabus sections that get their own page instead of appearing on the syllabus page.
 OWN_PAGE = {"Course Calendar", "Readings Calendar"}
 FIELD_START = "Required Field Experience"  # paragraph in Course Description where the field-trip text begins
-BANNER = ('<figure class="banner"><img src="assets/syllabus-banner.jpg" width="1600" height="532" '
-          'alt="Photo strip of eleven animals: grizzly bear, mountain lion, bison, coyote, orca, California condor, '
-          'gray wolf, sea otter, black wolf, manatee, and a polar bear with its cub."></figure>')
+def banner():
+    return (f'<figure class="banner"><img src="{A}assets/syllabus-banner.jpg" width="1600" height="532" '
+            'alt="Photo strip of eleven animals: grizzly bear, mountain lion, bison, coyote, orca, California condor, '
+            'gray wolf, sea otter, black wolf, manatee, and a polar bear with its cub."></figure>')
 
 esc = html.escape
 
@@ -223,6 +244,8 @@ def row_kind(session):
         return "exam"
     if s.startswith("no class"):
         return "noclass"
+    if re.match(r"special topic \d", s):
+        return "st"
     if s.startswith("special"):
         return "special"
     if s.startswith("lab") or s.startswith("make"):
@@ -248,18 +271,32 @@ def read_calendar(table):
     return rows
 
 
+def item_key(session):
+    """("L", n) for Lecture n, ("ST", n) for Special Topic n."""
+    m = re.search(r"(\d+)", session)
+    return ("ST" if session.lower().startswith("special") else "L", int(m.group(1))) if m else None
+
+
+def item_id(key):
+    return f"lecture-{key[1]}" if key[0] == "L" else f"special-topic-{key[1]}"
+
+
+def item_name(key):
+    return f"Lecture {key[1]}" if key[0] == "L" else f"Special Topic {key[1]}"
+
+
 def read_readings(table):
     out = {}
     for r in table.rows[1:]:
-        m = re.search(r"(\d+)", r.cells[1].text)
-        if not m:
+        key = item_key(" ".join(r.cells[1].text.split()))
+        if not key:
             continue
         refs = []
         for p in r.cells[3].paragraphs:
             t = p.text.strip()
             if t:
                 refs.append(t)
-        out[int(m.group(1))] = refs
+        out[key] = refs
     return out
 
 
@@ -308,7 +345,11 @@ def page(filename, title, body, settings, description="", section=None):
         cur = ' aria-current="page"' if href == (section or filename) else ""
         nav.append(f'<li><a href="{href}"{cur}>{label}</a></li>')
     robots = '<meta name="robots" content="noindex, nofollow">\n' if not settings["public"] else ""
-    full_title = f"{title} | NEUR 411 Neuroethology" if filename != "index.html" else "NEUR 411 Neuroethology, Fall 2026"
+    full_title = (f"{title} | NEUR 411 Neuroethology, {TERM}" if filename != "index.html"
+                  else f"NEUR 411 Neuroethology, {TERM}")
+    terms = " ".join(f'<a href="{t["href"]}"{" aria-current=\"page\"" if t["label"] == TERM else ""}>{t["label"]}</a>'
+                     for t in settings.get("terms", []))
+    switch = f'<p class="site-terms"><span class="meta">Semester:</span> {terms}</p>' if terms else ""
     built = dt.date.today().strftime("%B %-d, %Y")
     return f"""<!doctype html>
 <html lang="en">
@@ -317,15 +358,16 @@ def page(filename, title, body, settings, description="", section=None):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light only">
 {robots}<title>{full_title}</title>
-<meta name="description" content="{esc(description or 'Course website for NEUR 411 Neuroethology, Fall 2026.')}">
-<link rel="stylesheet" href="assets/site.css">
+<meta name="description" content="{esc(description or f'Course website for NEUR 411 Neuroethology, {TERM}.')}">
+<link rel="stylesheet" href="{A}assets/site.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-header">
   <div class="wrap">
     <p class="site-title"><a href="index.html">NEUR 411 <span class="sep" aria-hidden="true">·</span> Neuroethology</a></p>
-    <p class="site-term">Fall 2026 <span aria-hidden="true">·</span> Jordan Lopez, M.D., Ph.D.</p>
+    <p class="site-term">{TERM} <span aria-hidden="true">·</span> Jordan Lopez, M.D., Ph.D.</p>
+    {switch}
   </div>
   <nav class="site-nav" aria-label="Main">
     <ul class="wrap">{''.join(nav)}</ul>
@@ -338,7 +380,7 @@ def page(filename, title, body, settings, description="", section=None):
 </main>
 <footer class="site-footer">
   <div class="wrap">
-    <p>NEUR 411 Neuroethology, Fall 2026. Instructor: Jordan Lopez, M.D., Ph.D.,
+    <p>NEUR 411 Neuroethology, {TERM}. Instructor: Jordan Lopez, M.D., Ph.D.,
     <a href="mailto:jlopez11@usc.edu">jlopez11@usc.edu</a>. Grades and submissions are handled in {settings['lms']}.</p>
     <p><a href="accessibility.html">Accessibility</a> <span aria-hidden="true">·</span> Last updated {built}</p>
   </div>
@@ -363,11 +405,11 @@ def section_html(sections, title, level=2, sid=None):
 # ---------------------------------------------------------------- pages
 
 def load_announcements():
-    data = json.loads((SRC / "announcements.json").read_text())
+    data = json.loads((TERM_SRC / "announcements.json").read_text())
     items = []
     for a in data["announcements"]:
         d = dt.date.fromisoformat(a["date"])
-        body = (SRC / "announcements" / a["file"]).read_text()
+        body = (TERM_SRC / "announcements" / a["file"]).read_text()
         items.append({**a, "d": d, "when": d.strftime("%A, %B %-d, %Y"), "body": body})
     return sorted(items, key=lambda a: a["d"], reverse=True)
 
@@ -403,7 +445,7 @@ def build_announcements(settings):
 {''.join(parts) or '<p>No announcements yet.</p>'}
 """
     return page("announcements.html", "Announcements", body, settings,
-                "Announcements for NEUR 411 Neuroethology, Fall 2026.")
+                f"Announcements for NEUR 411 Neuroethology, {TERM}.")
 
 
 def build_home(sections, cal, lectures, settings):
@@ -420,6 +462,8 @@ def build_home(sections, cal, lectures, settings):
             label = f'{r["session"]}: {label}'
         elif r["kind"] == "exam":
             label = f'{r["session"]}: {label}'
+        elif r["kind"] == "st":
+            label = f'{r["session"]}: {label}'
         elif r["kind"] == "special":
             label = f"Field experience: {label}"
         events.append({"d": r["date"].isoformat(), "label": label, "kind": r["kind"],
@@ -427,7 +471,7 @@ def build_home(sections, cal, lectures, settings):
     events_json = json.dumps(events)
     body = f"""
 <h1>NEUR 411 Neuroethology</h1>
-{BANNER}
+{banner()}
 <p class="lede">{runs_html(desc)}</p>
 
 <div class="grid-2">
@@ -452,10 +496,10 @@ def build_home(sections, cal, lectures, settings):
 <li><a href="readings.html">Recommended readings</a>: the primary papers behind each lecture, with DOI links.</li>
 <li><a href="labs.html">Labs</a>: lab schedule, report due dates, computational assignments and the reflection essay.</li>
 <li><a href="project.html">Lecture project</a>: the simulation or APA paper options and milestones.</li>
-<li><a href="field-experience.html">Field experience</a>: the required Fall Recess trip, October 8 to 11.</li>
+<li><a href="field-experience.html">Field experience</a>: the required {settings['field_label']} trip, {settings['field_dates']}.</li>
 <li><a href="special-topics.html">Special topics</a>: additional lecture topics you can request to replace a scheduled lecture.</li>
 <li><a href="resources.html">Resources</a>: software, library and study help, and USC policies and support services.</li>
-<li><a href="syllabus.html">Syllabus</a>: grading, exams, policies; also as a <a href="files/NEUR411_Syllabus_Fall2026.pdf">PDF</a> or <a href="files/NEUR411_Syllabus_Fall2026.docx">Word document</a>.</li>
+<li><a href="syllabus.html">Syllabus</a>: grading, exams, policies; also as a <a href="files/{STUB}.pdf">PDF</a> or <a href="files/{STUB}.docx">Word document</a>.</li>
 </ul>
 <p>Grades and assignment submissions are handled in {settings['lms']}. This site holds the course materials.</p>
 </section>
@@ -501,10 +545,10 @@ def build_syllabus(sections, settings):
         parts.append(f'<section aria-labelledby="{sid}"><h2 id="{sid}">{esc(title)}</h2>\n{blocks_html(blocks, label=title)}</section>')
     body = f"""
 <h1>Syllabus</h1>
-{BANNER}
-<p class="lede">NEUR 411 Neuroethology, Fall 2026. Download the full syllabus as a
-<a href="files/NEUR411_Syllabus_Fall2026.pdf">PDF</a> or a
-<a href="files/NEUR411_Syllabus_Fall2026.docx">Word document</a>.</p>
+{banner()}
+<p class="lede">NEUR 411 Neuroethology, {TERM}. Download the full syllabus as a
+<a href="files/{STUB}.pdf">PDF</a> or a
+<a href="files/{STUB}.docx">Word document</a>.</p>
 <nav class="toc" aria-labelledby="toc-heading">
 <h2 id="toc-heading">On this page</h2>
 <ol>{''.join(toc)}<li><a href="resources-university.html">University Policies and Resources</a> (separate page)</li></ol>
@@ -524,34 +568,34 @@ def build_schedule(sections, cal, settings):
     for r in cal:
         session = esc(r["session"])
         topic = r["topic_html"]
-        if r["kind"] == "lecture":
-            n = int(re.search(r"\d+", r["session"]).group())
-            topic = f'<a href="lectures.html#lecture-{n}">{topic}</a>'
+        if r["kind"] in ("lecture", "st"):
+            topic = f'<a href="lectures.html#{item_id(item_key(r["session"]))}">{topic}</a>'
         when = esc(r["date_label"])
         if r["date"]:
             when = f'<time datetime="{r["date"].isoformat()}">{when}</time>'
         notes = f'<td role="cell" class="notes">{r["notes_html"]}</td>' if r["notes_html"] else '<td role="cell" class="notes empty"></td>'
         rows.append(f'<tr role="row" class="row-{r["kind"]}"><th role="rowheader" scope="row">{when}</th>'
                     f'<td role="cell" class="session">{session}</td><td role="cell">{topic}</td>{notes}</tr>')
-    table = ('<table class="schedule" role="table"><caption>Course calendar, Fall 2026. Rows marked Exam are exams; '
+    table = (f'<table class="schedule" role="table"><caption>Course calendar, {TERM}. Rows marked Exam are exams; '
              'rows that begin with a week number are lab meetings for that week.</caption>'
-             '<thead><tr role="row"><th role="columnheader" scope="col">Date (2026)</th><th role="columnheader" scope="col">Session</th>'
+             f'<thead><tr role="row"><th role="columnheader" scope="col">Date ({YEAR})</th><th role="columnheader" scope="col">Session</th>'
              '<th role="columnheader" scope="col">Topic</th><th role="columnheader" scope="col">Assessment / notes</th></tr></thead>'
              f'<tbody>{"".join(rows)}</tbody></table>')
+    exams_text = " ".join(f'{esc(r["session"])} ({esc(r["date_label"])}) {esc(r["topic"][0].lower() + r["topic"][1:])}.'
+                          for r in cal if r["kind"] == "exam")
     body = f"""
 <h1>Course calendar</h1>
 {intro}
-<p>Lecture titles link to the slides. Exams: Exam 1 covers Lectures 1 to 10, Exam 2 Lectures 11 to 20,
-Exam 3 Lectures 21 to 30 and Exam 4 Lectures 31 to 40.</p>
+<p>Lecture titles link to the slides. {exams_text}</p>
 <div class="table-wrap schedule-wrap">{table}</div>
 """
     return page("schedule.html", "Schedule", body, settings,
-                "Course calendar for NEUR 411 Neuroethology, Fall 2026.")
+                f"Course calendar for NEUR 411 Neuroethology, {TERM}.")
 
 
-def deck_links(entry, n):
-    """Download button for a deck stored in docs/files/lectures/, otherwise View/Download links to Google Drive."""
-    hidden = f'<span class="visually-hidden"> for Lecture {n}</span>'
+def deck_links(entry, name):
+    """Download button for a deck stored in docs/files/lectures/, otherwise a View link to Google Drive."""
+    hidden = f'<span class="visually-hidden"> for {name}</span>'
     local = entry.get("local") if entry else None
     path = OUT / "files" / "lectures" / local if local else None
     if not path or not path.exists():
@@ -573,32 +617,50 @@ def lecture_rows(cal):
     return out
 
 
+def item_rows(cal):
+    """Lectures and scheduled special topics in calendar order: [(key, row)]."""
+    return [(item_key(r["session"]), r) for r in cal if r["kind"] in ("lecture", "st")]
+
+
+def exam_of(key, r):
+    if key[0] == "L":
+        return (key[1] - 1) // 10 + 1
+    m = re.search(r"Exam (\d)", r["notes_html"])
+    return int(m.group(1)) if m else None
+
+
 def build_lectures(cal, lectures, readings, settings):
-    manifest = {e["n"]: e for e in lectures["lectures"]}
+    manifest = {("L", e["n"]): e for e in lectures["lectures"]}
+    manifest.update({("ST", e["st"]): e for e in lectures.get("special_topics", [])})
     blocks = {1: [], 2: [], 3: [], 4: []}
-    for n, r in lecture_rows(cal):
-        blocks[(n - 1) // 10 + 1].append((n, r))
+    for key, r in item_rows(cal):
+        blocks.setdefault(exam_of(key, r), []).append((key, r))
     exam_dates = {int(re.search(r"\d+", r["session"]).group()): r["date_label"]
                   for r in cal if r["kind"] == "exam"}
     out = []
     for exam, items in blocks.items():
+        if exam is None:
+            continue
         lo, hi = (exam - 1) * 10 + 1, exam * 10
+        n_st = sum(1 for k, _ in items if k[0] == "ST")
+        extra = f" and Special Topic {next(k[1] for k, _ in items if k[0] == 'ST')}" if n_st == 1 else ""
         lis = []
-        for n, r in items:
-            entry = manifest.get(n)
-            links = deck_links(entry, n)
-            nread = len(readings.get(n, []))
-            rlink = (f' <a href="readings.html#lecture-{n}">Recommended readings'
-                     f'<span class="visually-hidden"> for Lecture {n}</span></a> <span class="meta">({nread})</span>'
+        for key, r in items:
+            name, iid = item_name(key), item_id(key)
+            links = deck_links(manifest.get(key), name)
+            nread = len(readings.get(key, []))
+            rlink = (f' <a href="readings.html#{iid}">Recommended readings'
+                     f'<span class="visually-hidden"> for {name}</span></a> <span class="meta">({nread})</span>'
                      if nread else "")
             when = f'<time datetime="{r["date"].isoformat()}">{esc(r["date_label"])}</time>' if r["date"] else ""
-            lis.append(f"""<li class="lecture" id="lecture-{n}">
-<h3><span class="lnum">Lecture {n}</span> {r['topic_html']}</h3>
+            cls = "lecture special" if key[0] == "ST" else "lecture"
+            lis.append(f"""<li class="{cls}" id="{iid}">
+<h3><span class="lnum">{name}</span> {r['topic_html']}</h3>
 <p class="meta">{when}</p>
 <p class="actions">{links}{rlink}</p>
 </li>""")
         out.append(f"""<section aria-labelledby="exam-{exam}">
-<h2 id="exam-{exam}">Lectures {lo} to {hi} <span class="meta">(Exam {exam}, {esc(exam_dates.get(exam, ''))})</span></h2>
+<h2 id="exam-{exam}">Lectures {lo} to {hi}{extra} <span class="meta">(Exam {exam}, {esc(exam_dates.get(exam, ''))})</span></h2>
 <ol class="lecture-list">{''.join(lis)}</ol>
 </section>""")
     body = f"""
@@ -621,18 +683,22 @@ class that is not on the slides. Updated versions of each deck will replace thes
 def build_readings(sections, cal, readings, settings):
     by = dict(sections)
     intro = blocks_html([b for b in by["Readings Calendar"] if isinstance(b, Paragraph)])
-    out = []
-    for n, r in lecture_rows(cal):
-        refs = readings.get(n, [])
+    out, jump = [], []
+    for key, r in item_rows(cal):
+        refs = readings.get(key, [])
         if not refs:
             continue
+        name, iid = item_name(key), item_id(key)
         when = esc(r["date_label"])
-        out.append(f"""<section class="reading-group" aria-labelledby="lecture-{n}">
-<h2 id="lecture-{n}"><span class="lnum">Lecture {n}</span> {r['topic_html']}</h2>
-<p class="meta">{when} <span aria-hidden="true">·</span> <a href="lectures.html#lecture-{n}">Slides<span class="visually-hidden"> for Lecture {n}</span></a></p>
+        out.append(f"""<section class="reading-group" aria-labelledby="{iid}">
+<h2 id="{iid}"><span class="lnum">{name}</span> {r['topic_html']}</h2>
+<p class="meta">{when} <span aria-hidden="true">·</span> <a href="lectures.html#{iid}">Slides<span class="visually-hidden"> for {name}</span></a></p>
 <ul class="refs">{''.join(reading_html(x) for x in refs)}</ul>
 </section>""")
-    jump = "".join(f'<li><a href="#lecture-{n}">{n}</a></li>' for n, _ in lecture_rows(cal) if readings.get(n))
+        label = str(key[1]) if key[0] == "L" else f"ST{key[1]}"
+        aria = "" if key[0] == "L" else f' aria-label="Special Topic {key[1]}"'
+        jump.append(f'<li><a href="#{iid}"{aria}>{label}</a></li>')
+    jump = "".join(jump)
     body = f"""
 <h1>Recommended readings</h1>
 {intro}
@@ -687,38 +753,48 @@ def build_field(sections, cal, settings):
         when = f'<time datetime="{r["date"].isoformat()}">{esc(r["date_label"])}</time>' if r["date"] else esc(r["date_label"])
         rows.append(f'<tr><th scope="row">{when}</th><td>{r["topic_html"]}</td></tr>')
     table = ('<table><caption>Field experience days and special topics</caption><thead><tr>'
-             '<th scope="col">Date (2026)</th><th scope="col">Site and special topic</th></tr></thead>'
+             f'<th scope="col">Date ({YEAR})</th><th scope="col">Site and special topic</th></tr></thead>'
              f'<tbody>{"".join(rows)}</tbody></table>')
+    refl_due = next((r["date_label"] for r in cal if "reflection" in r["session"].lower()), "")
     body = f"""
-<h1>Field experience: Fall Recess</h1>
+<h1>Field experience: {settings['field_label']}</h1>
 {blocks_html(field, base_level=2, label="Field experience")}
 <h2 id="days">The four days</h2>
 {wrap_table(table, "Field experience days")}
-<p>The trip is evaluated through the Captivity and Conservation Reflection, a 5-page essay due Sat Nov 21
+<p>The trip is evaluated through the Captivity and Conservation Reflection, a 5-page essay due {refl_due}
 (details on the <a href="labs.html#laboratory-component">Labs</a> page).</p>
 """
     return page("field-experience.html", "Field Experience", body, settings,
-                "The required Fall Recess field experience for NEUR 411.")
+                f"The required {settings['field_label']} field experience for NEUR 411.")
 
 
-def build_special(settings):
+def build_special(settings, cal):
     data = json.loads((SRC / "special_topics.json").read_text())
     total = sum(len(g["topics"]) for g in data["groups"])
     groups = []
     for g in data["groups"]:
         items = []
         for t in g["topics"]:
-            note = ' <span class="meta">(also a Fall Recess field experience topic)</span>' if t.get("field") else ""
+            note = f' <span class="meta">(also a {settings["field_label"]} field experience topic)</span>' if t.get("field") else ""
             items.append(f"<li>{esc(t['title'])}{note}</li>")
         groups.append(f'<h3 id="{slug(g["name"])}">{esc(g["name"])} <span class="meta">({len(g["topics"])})</span></h3>'
                       f'<ul class="topic-list">{"".join(items)}</ul>')
     jump = "".join(f'<li><a href="#{slug(g["name"])}">{esc(g["name"])}</a></li>' for g in data["groups"])
+    sched = [(item_key(r["session"]), r) for r in cal if r["kind"] == "st"]
+    scheduled_html = ""
+    if sched:
+        lis = "".join(f'<li><a href="lectures.html#{item_id(k)}">{item_name(k)}</a> ({esc(r["date_label"])}): '
+                      f'{r["topic_html"]} <span class="meta">{r["notes_html"]}</span></li>' for k, r in sched)
+        scheduled_html = (f'<section aria-labelledby="this-term"><h2 id="this-term">On the schedule this semester</h2>'
+                          f'<p>These special topics are part of the {TERM} schedule and are covered on the exams.</p>'
+                          f'<ul>{lis}</ul></section>')
     body = f"""
 <h1>Special topics</h1>
 <p class="lede">Beyond the 40 scheduled lectures, the course has a library of special-topic lectures on other
 animals and questions. They can replace a scheduled lecture during the semester, and every one of them is
 a reference for your lecture project and for going further.</p>
 
+{scheduled_html}
 <section aria-labelledby="requesting">
 <h2 id="requesting">Requesting a special topic</h2>
 <ul>
@@ -813,9 +889,9 @@ Accessibility Services and see the <a href="syllabus.html#accommodations">accomm
 def refresh_syllabus_files():
     files = OUT / "files"
     files.mkdir(parents=True, exist_ok=True)
-    docx_out = files / "NEUR411_Syllabus_Fall2026.docx"
+    docx_out = files / f"{STUB}.docx"
     shutil.copyfile(SYLLABUS, docx_out)
-    pdf_out = files / "NEUR411_Syllabus_Fall2026.pdf"
+    pdf_out = files / f"{STUB}.pdf"
     stale = not pdf_out.exists() or pdf_out.stat().st_mtime < SYLLABUS.stat().st_mtime
     soffice = shutil.which("soffice") or shutil.which("libreoffice")
     if stale and soffice:
@@ -826,15 +902,16 @@ def refresh_syllabus_files():
 
 
 def main():
-    settings = json.loads((SRC / "site.json").read_text())
-    lectures = json.loads((SRC / "lectures.json").read_text())
+    term_dir = sys.argv[1] if len(sys.argv) > 1 else None
+    settings = configure(term_dir)
+    lectures = json.loads((TERM_SRC / "lectures.json").read_text())
     doc = Document(SYLLABUS)
     sections = read_sections(doc)
     by = dict(sections)
     cal = read_calendar(next(b for b in by["Course Calendar"] if isinstance(b, Table)))
     readings = read_readings(next(b for b in by["Readings Calendar"] if isinstance(b, Table)))
 
-    OUT.mkdir(exist_ok=True)
+    OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "assignments.html").unlink(missing_ok=True)
     pages = {
         "index.html": build_home(sections, cal, lectures, settings),
@@ -845,7 +922,7 @@ def main():
         "labs.html": build_labs(sections, settings),
         "project.html": build_project(sections, settings),
         "field-experience.html": build_field(sections, cal, settings),
-        "special-topics.html": build_special(settings),
+        "special-topics.html": build_special(settings, cal),
         "announcements.html": build_announcements(settings),
         "resources.html": build_resources(sections, settings),
         "resources-university.html": build_university(settings),
@@ -853,15 +930,17 @@ def main():
     }
     for name, content in pages.items():
         (OUT / name).write_text(content)
-    (OUT / ".nojekyll").write_text("")
-    robots = "User-agent: *\nAllow: /\n" if settings["public"] else "User-agent: *\nDisallow: /\n"
-    (OUT / "robots.txt").write_text(robots)
+    if not term_dir:  # site-wide files live at the top of docs/
+        (OUT / ".nojekyll").write_text("")
+        robots = "User-agent: *\nAllow: /\n" if settings["public"] else "User-agent: *\nDisallow: /\n"
+        (OUT / "robots.txt").write_text(robots)
     refresh_syllabus_files()
 
     n_lec = len(lecture_rows(cal))
     n_ref = sum(len(v) for v in readings.values())
     missing = sorted(set(range(1, n_lec + 1)) - {e["n"] for e in lectures["lectures"]})
-    print(f"built {len(pages)} pages: {n_lec} lectures, {n_ref} readings"
+    n_st = sum(1 for r in cal if r["kind"] == "st")
+    print(f"built {TERM} in {OUT.relative_to(ROOT)}: {len(pages)} pages, {n_lec} lectures, {n_st} special topics, {n_ref} readings"
           + (f"; no slides for lectures {missing}" if missing else ""))
 
 
