@@ -60,7 +60,7 @@ main:focus { outline: none; }
 .site-title a { color: var(--text); text-decoration: none; }
 .site-title a:hover { text-decoration: underline; }
 .site-term { margin: 0.1rem 0 0.5rem; color: var(--muted); }
-.site-nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin: 0 auto; padding-bottom: 0.6rem; }
+.site-nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem 0.8rem; margin: 0 auto; padding-bottom: 0.6rem; font-size: 0.96rem; }
 .site-nav li { margin: 0; }
 .site-nav a { display: inline-block; padding: 0.35rem 0; color: var(--text); text-decoration: none; border-bottom: 3px solid transparent; }
 .site-nav a:hover { border-bottom-color: var(--rule); }
@@ -181,7 +181,7 @@ tr.row-special td:nth-child(3) { font-style: normal; }
 .announcement table { max-width: 36rem; }
 th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
 tr.total th, tr.total td { font-weight: 700; border-top: 2px solid var(--text); }
-figure.chart { margin: 1.5rem 0; max-width: 56rem; }
+figure.chart { margin: 1.5rem 0; max-width: 48rem; }
 figure.chart img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
 .signature { font-weight: 600; }
 @media (max-width: 40rem) {
